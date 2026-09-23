@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MBBSFMetricsDashboard")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+22b1f43f4f1fb0cd5b67fd522e1a291984a614ab")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c9f2aa0baad3d52a86309d7b242080af283cfb2d")]
 [assembly: System.Reflection.AssemblyProductAttribute("MBBSFMetricsDashboard")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MBBSFMetricsDashboard")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
