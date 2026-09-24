@@ -1,0 +1,25 @@
+@model MBBSFMetricsDashboard.Models.LoginViewModel
+@{
+    ViewData["Title"] = "Staff Login";
+}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-4">
+        <h1>Staff Login</h1>
+        <p>Sign in with your MBBSF account.</p>
+        <form asp-controller="Staff" asp-action="Login" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div class="mb-3">
+                <label asp-for="Username" class="form-label"></label>
+                <input asp-for="Username" class="form-control" autocomplete="username" maxlength="100" required />
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Password" class="form-label"></label>
+                <input asp-for="Password" class="form-control" autocomplete="current-password" maxlength="128" required />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Sign in</button>
+            <a asp-controller="Login" asp-action="Index" class="btn btn-link">Back</a>
+        </form>
+    </div>
+</div>
