@@ -1,0 +1,17 @@
+@{
+    ViewData["Title"] = "Access denied";
+}
+<h1>Access denied</h1>
+<p>Your account does not have permission to access this page.</p>
+@if (User.IsInRole("User"))
+{
+    <a asp-controller="Staff" asp-action="Dashboard">Return to your dashboard</a>
+}
+else if (User.IsInRole("Admin"))
+{
+    <a asp-controller="Admin" asp-action="Dashboard">Return to your dashboard</a>
+}
+else
+{
+    <a asp-controller="Login" asp-action="Index">Return to login</a>
+}
