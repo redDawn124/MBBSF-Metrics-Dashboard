@@ -1,0 +1,71 @@
+﻿@{
+    ViewData["Title"] = "Admin Login";
+
+    bool isLocked = ViewBag.AccessDenied == true;
+}
+
+<div class="text-center">
+    <h1>Admin Login</h1>
+
+    <form asp-controller="Admin" asp-action="Login" method="post">
+
+        <div>
+            <label for="username">Username:</label>
+            <input type="text"
+                   id="username"
+                   name="username"
+            @(isLocked ? "disabled" : "")>
+        </div>
+
+        <br>
+
+        <div>
+            <label for="password">Password:</label>
+            <input type="password"
+                   id="password"
+                   name="password"
+            @(isLocked ? "disabled" : "")>
+        </div>
+
+        <br>
+
+        <button type="submit" @(isLocked ? "disabled" : "")>
+            Login
+        </button>
+
+    </form>
+
+    @if (isLocked)//Makes things locked
+    {
+        <p style="color: red; font-weight: bold;">
+            Access denied. Too many failed login attempts.
+        </p>
+
+        <p>
+            You can try again in:
+            <span id="countdown"></span>
+        </p>
+		//set timer for 10 minutes, and countdown to 0, then reload page to allow login again
+        <script> 
+                const lockoutEndTime = new Date("@ViewBag.LockoutEndTime").getTime();
+
+                const countdown = setInterval(function () {
+                    const now = new Date().getTime();
+                    const remaining = lockoutEndTime - now;
+
+                    if (remaining <= 0) {
+                        clearInterval(countdown);
+                        location.reload();
+                        return;
+                    }
+
+                    const minutes = Math.floor(remaining / (1000 * 60));
+                    const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
+
+                    document.getElementById("countdown").textContent =
+                        minutes + ":" + seconds.toString().padStart(2, "0");
+                }, 1000);
+        </script>
+    }
+
+</div>
