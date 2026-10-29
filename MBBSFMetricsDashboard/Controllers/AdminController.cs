@@ -73,5 +73,14 @@ namespace MBBSFMetricsDashboard.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Logout()
+        {
+            // The admin prototype does not issue an auth cookie yet, so there is
+            // no session to sign out of. Send the user back to the login chooser.
+            return RedirectToAction("Index", "Login");
+        }
     }
 }
