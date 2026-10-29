@@ -1,71 +1,24 @@
-﻿@{
+@model MBBSFMetricsDashboard.Models.LoginViewModel
+@{
     ViewData["Title"] = "Admin Login";
-
-    bool isLocked = ViewBag.AccessDenied == true;
 }
-
-<div class="text-center">
-    <h1>Admin Login</h1>
-
-    <form asp-controller="Admin" asp-action="Login" method="post">
-
-        <div>
-            <label for="username">Username:</label>
-            <input type="text"
-                   id="username"
-                   name="username"
-            @(isLocked ? "disabled" : "")>
-        </div>
-
-        <br>
-
-        <div>
-            <label for="password">Password:</label>
-            <input type="password"
-                   id="password"
-                   name="password"
-            @(isLocked ? "disabled" : "")>
-        </div>
-
-        <br>
-
-        <button type="submit" @(isLocked ? "disabled" : "")>
-            Login
-        </button>
-
-    </form>
-
-    @if (isLocked)//Makes things locked
-    {
-        <p style="color: red; font-weight: bold;">
-            Access denied. Too many failed login attempts.
-        </p>
-
-        <p>
-            You can try again in:
-            <span id="countdown"></span>
-        </p>
-		//set timer for 10 minutes, and countdown to 0, then reload page to allow login again
-        <script> 
-                const lockoutEndTime = new Date("@ViewBag.LockoutEndTime").getTime();
-
-                const countdown = setInterval(function () {
-                    const now = new Date().getTime();
-                    const remaining = lockoutEndTime - now;
-
-                    if (remaining <= 0) {
-                        clearInterval(countdown);
-                        location.reload();
-                        return;
-                    }
-
-                    const minutes = Math.floor(remaining / (1000 * 60));
-                    const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
-
-                    document.getElementById("countdown").textContent =
-                        minutes + ":" + seconds.toString().padStart(2, "0");
-                }, 1000);
-        </script>
-    }
-
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-4">
+        <h1>Admin Login</h1>
+        <form asp-controller="Admin" asp-action="Login" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+            <div class="mb-3">
+                <label asp-for="Username" class="form-label"></label>
+                <input asp-for="Username" class="form-control" required />
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Password" class="form-label"></label>
+                <input asp-for="Password" class="form-control" required />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+            <a asp-controller="Login" asp-action="Index" class="btn btn-link">Back</a>
+        </form>
+    </div>
 </div>

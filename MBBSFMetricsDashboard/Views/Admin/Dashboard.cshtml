@@ -1,4 +1,4 @@
-﻿@{
+@{
     ViewData["Title"] = "Admin Dashboard";
     ViewData["CanEdit"] = true;
 }
@@ -10,24 +10,19 @@
             Metrics by source. Administrators can import and edit data.
         </p>
     </div>
-    <form asp-controller="Admin" asp-action="Logout" method="post">
-        @Html.AntiForgeryToken()
-        <button type="submit" class="btn btn-outline-secondary">Logout</button>
-    </form>
+    <div class="d-flex flex-wrap gap-2">
+        <a asp-controller="Account" asp-action="Index" class="btn btn-outline-secondary">Manage Accounts</a>
+        <a asp-controller="Account" asp-action="ChangePassword" class="btn btn-outline-secondary">Change Password</a>
+        <form asp-controller="Admin" asp-action="Logout" method="post">
+            @Html.AntiForgeryToken()
+            <button type="submit" class="btn btn-outline-secondary">Logout</button>
+        </form>
+    </div>
 </div>
 
-<<<<<<< HEAD
 <partial name="_MetricsTabs" />
 
 @section Scripts {
     <script src="~/lib/chartjs/chart.umd.min.js"></script>
     <script src="~/js/dashboard-tabs.js" asp-append-version="true"></script>
 }
-=======
-    <p>Welcome to the Admin Dashboard.</p>
-</div>
-
-
-    <a asp-controller="Admin" asp-action="Logout" class="btn btn-primary" style="position: fixed; top: 10px; right: 100px; z-index: 1000px;">Logout</a>
-   
->>>>>>> main

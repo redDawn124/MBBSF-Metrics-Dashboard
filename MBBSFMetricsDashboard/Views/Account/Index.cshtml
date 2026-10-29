@@ -1,0 +1,38 @@
+@model IReadOnlyList<MBBSFMetricsDashboard.Services.AccountInfo>
+@{
+    ViewData["Title"] = "Manage Accounts";
+}
+<h1>Manage Accounts</h1>
+<p>Manage staff and administrator accounts.</p>
+@if (TempData["Message"] is string message)
+{
+    <p role="status">@message</p>
+}
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create Account</a>
+    <a asp-controller="Admin" asp-action="Dashboard" class="btn btn-outline-secondary">Dashboard</a>
+</p>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Name</th><th>Email</th><th>Role</th><th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    @foreach (var account in Model)
+    {
+        <tr>
+            <td>@account.FullName</td>
+            <td>@account.Email</td>
+            <td>@(account.Role == "Admin" ? "Admin" : "Staff")</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@account.Id" class="btn btn-sm btn-outline-secondary">Edit / Reset Password</a>
+                @if (account.Role == "User")
+                {
+                    <a asp-action="Delete" asp-route-id="@account.Id" class="btn btn-sm btn-outline-danger">Delete</a>
+                }
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

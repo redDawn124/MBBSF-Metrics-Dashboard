@@ -11,22 +11,18 @@
             You have view-only access. Dashboard editing and database management are available to administrators.
         </p>
     </div>
-    <form asp-controller="Staff" asp-action="Logout" method="post">
-        @Html.AntiForgeryToken()
-        <button type="submit" class="btn btn-outline-secondary">Logout</button>
-    </form>
+    <div class="d-flex flex-wrap gap-2">
+        <a asp-controller="Account" asp-action="ChangePassword" class="btn btn-outline-secondary">Change Password</a>
+        <form asp-controller="Staff" asp-action="Logout" method="post">
+            @Html.AntiForgeryToken()
+            <button type="submit" class="btn btn-outline-secondary">Logout</button>
+        </form>
+    </div>
 </div>
 
-<<<<<<< HEAD
 <partial name="_MetricsTabs" />
 
 @section Scripts {
     <script src="~/lib/chartjs/chart.umd.min.js"></script>
     <script src="~/js/dashboard-tabs.js" asp-append-version="true"></script>
 }
-=======
-<form asp-controller="Staff" asp-action="Logout" method="post" class="mt-3">
-    @Html.AntiForgeryToken()
-    <button type="submit" class="btn btn-outline-secondary">Logout</button>
-</form>
->>>>>>> main
