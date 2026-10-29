@@ -17,9 +17,16 @@
     </form>
 </div>
 
+<<<<<<< HEAD
 <partial name="_MetricsTabs" />
 
 @section Scripts {
     <script src="~/lib/chartjs/chart.umd.min.js"></script>
     <script src="~/js/dashboard-tabs.js" asp-append-version="true"></script>
 }
+=======
+<form asp-controller="Staff" asp-action="Logout" method="post" class="mt-3">
+    @Html.AntiForgeryToken()
+    <button type="submit" class="btn btn-outline-secondary">Logout</button>
+</form>
+>>>>>>> main

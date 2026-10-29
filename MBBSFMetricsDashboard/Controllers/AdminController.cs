@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
+
 namespace MBBSFMetricsDashboard.Controllers
 {
     public class AdminController : Controller
@@ -60,6 +61,12 @@ namespace MBBSFMetricsDashboard.Controllers
             }
 
             return View();
+        }
+
+        public IActionResult Logout()
+        {
+           
+            return RedirectToAction("Login");
         }
 
         public IActionResult Dashboard()
