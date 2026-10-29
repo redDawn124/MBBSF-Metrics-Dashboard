@@ -29,3 +29,26 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
+
+/* Metrics tabs */
+.metrics-tabs .nav-tabs .nav-link {
+  color: var(--bs-secondary-color);
+}
+
+.metrics-tabs .nav-tabs .nav-link.active {
+  font-weight: 600;
+}
+
+.metrics-empty {
+  max-width: 32rem;
+  margin-inline: auto;
+}
+
+.metrics-empty-title {
+  font-weight: 600;
+}
+
+.metrics-chart {
+  position: relative;
+  height: 20rem;
+}

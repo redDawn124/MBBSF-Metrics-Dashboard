@@ -1,9 +1,25 @@
 @{
     ViewData["Title"] = "Board Member Dashboard";
+    ViewData["CanEdit"] = false;
 }
-<h1>Board Member Dashboard</h1>
-<p>Welcome, @User.Identity?.Name.</p>
-<p>You have view-only access. Dashboard editing and database management are available to administrators.</p>
-<div class="alert alert-info" role="status">
-    Your login is working. Scholarship, Coursera, and mentoring metrics will appear here when the dashboard is connected.
+
+<div class="d-flex flex-wrap justify-content-between align-items-end gap-2 mb-3">
+    <div>
+        <h1 class="h3 mb-1">Board Member Dashboard</h1>
+        <p class="text-body-secondary mb-1">Welcome, @User.Identity?.Name.</p>
+        <p class="text-body-secondary mb-0">
+            You have view-only access. Dashboard editing and database management are available to administrators.
+        </p>
+    </div>
+    <form asp-controller="Staff" asp-action="Logout" method="post">
+        @Html.AntiForgeryToken()
+        <button type="submit" class="btn btn-outline-secondary">Logout</button>
+    </form>
 </div>
+
+<partial name="_MetricsTabs" />
+
+@section Scripts {
+    <script src="~/lib/chartjs/chart.umd.min.js"></script>
+    <script src="~/js/dashboard-tabs.js" asp-append-version="true"></script>
+}

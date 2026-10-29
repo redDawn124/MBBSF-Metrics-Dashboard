@@ -49,6 +49,14 @@ public class StaffController(DemoAccountService accounts) : Controller
     [HttpGet]
     public IActionResult Dashboard() => View();
 
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Logout()
+    {
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        return RedirectToAction("Index", "Login");
+    }
+
     [AllowAnonymous]
     [HttpGet]
     public IActionResult AccessDenied()

@@ -1,0 +1,103 @@
+@{
+    var canEdit = ViewData["CanEdit"] as bool? ?? false;
+}
+
+<div class="metrics-tabs">
+    <ul class="nav nav-tabs nav-fill" id="metricsTabs" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="coursera-tab" type="button" role="tab"
+                    data-bs-toggle="tab" data-bs-target="#coursera-pane"
+                    aria-controls="coursera-pane" aria-selected="true">
+                Coursera
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="google-forms-tab" type="button" role="tab"
+                    data-bs-toggle="tab" data-bs-target="#google-forms-pane"
+                    aria-controls="google-forms-pane" aria-selected="false">
+                Google Forms
+            </button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="cognito-tab" type="button" role="tab"
+                    data-bs-toggle="tab" data-bs-target="#cognito-pane"
+                    aria-controls="cognito-pane" aria-selected="false">
+                Cognito
+            </button>
+        </li>
+    </ul>
+
+    <div class="tab-content border border-top-0 rounded-bottom bg-white p-3" id="metricsTabContent">
+        <div class="tab-pane fade show active" id="coursera-pane" role="tabpanel"
+             aria-labelledby="coursera-tab" tabindex="0">
+            <div class="metrics-empty text-center py-5" data-empty-state>
+                <p class="metrics-empty-title mb-1">No Coursera data yet</p>
+                <p class="text-body-secondary mb-0">
+                    Imported Coursera metrics will appear here as a table and chart.
+                </p>
+                @if (canEdit)
+                {
+                    <button type="button" class="btn btn-sm btn-outline-primary mt-3" disabled
+                            title="CSV import is not available yet">
+                        Import CSV
+                    </button>
+                }
+                else
+                {
+                    <p class="small text-body-secondary mb-0 mt-2">
+                        Ask an administrator to import data.
+                    </p>
+                }
+            </div>
+            @* Future: <div class="table-responsive">…</div> and <canvas data-chart-config="…"> *@
+        </div>
+
+        <div class="tab-pane fade" id="google-forms-pane" role="tabpanel"
+             aria-labelledby="google-forms-tab" tabindex="0">
+            <div class="metrics-empty text-center py-5" data-empty-state>
+                <p class="metrics-empty-title mb-1">No Google Forms data yet</p>
+                <p class="text-body-secondary mb-0">
+                    Imported Google Forms metrics will appear here as a table and chart.
+                </p>
+                @if (canEdit)
+                {
+                    <button type="button" class="btn btn-sm btn-outline-primary mt-3" disabled
+                            title="CSV import is not available yet">
+                        Import CSV
+                    </button>
+                }
+                else
+                {
+                    <p class="small text-body-secondary mb-0 mt-2">
+                        Ask an administrator to import data.
+                    </p>
+                }
+            </div>
+            @* Future: <div class="table-responsive">…</div> and <canvas data-chart-config="…"> *@
+        </div>
+
+        <div class="tab-pane fade" id="cognito-pane" role="tabpanel"
+             aria-labelledby="cognito-tab" tabindex="0">
+            <div class="metrics-empty text-center py-5" data-empty-state>
+                <p class="metrics-empty-title mb-1">No Cognito data yet</p>
+                <p class="text-body-secondary mb-0">
+                    Imported Cognito metrics will appear here as a table and chart.
+                </p>
+                @if (canEdit)
+                {
+                    <button type="button" class="btn btn-sm btn-outline-primary mt-3" disabled
+                            title="CSV import is not available yet">
+                        Import CSV
+                    </button>
+                }
+                else
+                {
+                    <p class="small text-body-secondary mb-0 mt-2">
+                        Ask an administrator to import data.
+                    </p>
+                }
+            </div>
+            @* Future: <div class="table-responsive">…</div> and <canvas data-chart-config="…"> *@
+        </div>
+    </div>
+</div>
