@@ -1,86 +1,50 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using MBBSFMetricsDashboard.Models;
+using MBBSFMetricsDashboard.Services;
 
+namespace MBBSFMetricsDashboard.Controllers;
 
-namespace MBBSFMetricsDashboard.Controllers
+[Authorize(Roles = "Admin")]
+public class AdminController(AccountService accounts) : Controller
 {
-    public class AdminController : Controller
+    [AllowAnonymous]
+    [HttpGet]
+    public IActionResult Login()
     {
-        // TEMPORARY ADMIN ACCOUNTS
-        // These will be replaced with database accounts later.
-        private readonly Dictionary<string, string> adminAccounts = new()
-        {
-            { "taurus", "password123" },
-            { "leonard", "password123" },
-            { "brenda", "password123" }
-        };
+        if (User.IsInRole("Admin")) return RedirectToAction(nameof(Dashboard));
+        return View(new LoginViewModel());
+    }
 
-        private static int failedAttempts = 0; //counter for attemps
-        private static DateTime? lockoutEndTime = null; //timer for locked out of guessing password
-
-        [HttpGet]
-        public IActionResult Login()
+    [AllowAnonymous]
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Login(LoginViewModel model)
+    {
+        if (!ModelState.IsValid) return View(model);
+        var account = accounts.Authenticate(model.Username, model.Password, "Admin");
+        if (account is null)
         {
-            return View();
+            ModelState.AddModelError(string.Empty, "The username or password is incorrect.");
+            return View(model);
         }
+        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+            AccountService.PrincipalFor(account), new AuthenticationProperties { IsPersistent = false });
+        return account.MustChangePassword
+            ? RedirectToAction("ChangePassword", "Account")
+            : RedirectToAction(nameof(Dashboard));
+    }
 
-        [HttpPost]
-        public IActionResult Login(string username, string password)
-        {
-            // Check if the admin is currently locked out
-            if (lockoutEndTime.HasValue)
-            {
-                if (DateTime.Now < lockoutEndTime.Value)
-                {
-                    ViewBag.AccessDenied = true;
-                    ViewBag.LockoutEndTime = lockoutEndTime.Value;
-                    return View();
-                }
+    [HttpGet]
+    public IActionResult Dashboard() => View();
 
-                // Lockout has ended, so reset the login attempts
-                lockoutEndTime = null;
-                failedAttempts = 0;
-            }
-
-            // Check the temporary admin username and password
-            if (adminAccounts.ContainsKey(username) &&
-                adminAccounts[username] == password)
-            {
-                failedAttempts = 0;
-                return RedirectToAction("Dashboard");
-            }
-
-            // Incorrect login
-            failedAttempts++;
-
-            // Lock the login after 5 failed attempts for 10 minutes
-            if (failedAttempts >= 5)
-            {
-                lockoutEndTime = DateTime.Now.AddMinutes(10);
-                ViewBag.AccessDenied = true;
-                ViewBag.LockoutEndTime = lockoutEndTime.Value;
-            }
-
-            return View();
-        }
-
-        public IActionResult Logout()
-        {
-           
-            return RedirectToAction("Login");
-        }
-
-        public IActionResult Dashboard()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Logout()
-        {
-            // The admin prototype does not issue an auth cookie yet, so there is
-            // no session to sign out of. Send the user back to the login chooser.
-            return RedirectToAction("Index", "Login");
-        }
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Logout()
+    {
+        await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        return RedirectToAction("Index", "Login");
     }
 }

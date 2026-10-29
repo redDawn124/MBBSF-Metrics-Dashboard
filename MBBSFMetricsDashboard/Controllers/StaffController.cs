@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -10,7 +9,7 @@ namespace MBBSFMetricsDashboard.Controllers;
 
 [Authorize(Roles = "User")]
 [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-public class StaffController(DemoAccountService accounts) : Controller
+public class StaffController(AccountService accounts) : Controller
 {
     [AllowAnonymous]
     [HttpGet]
@@ -27,23 +26,17 @@ public class StaffController(DemoAccountService accounts) : Controller
     public async Task<IActionResult> Login(LoginViewModel model)
     {
         if (!ModelState.IsValid) return View(model);
-
-        var username = accounts.Validate(model.Username, model.Password, "User");
-        if (username is null)
+        var account = accounts.Authenticate(model.Username, model.Password, "User");
+        if (account is null)
         {
             ModelState.AddModelError(string.Empty, "The username or password is incorrect.");
             return View(model);
         }
-
-        var identity = new ClaimsIdentity(new[]
-        {
-            new Claim(ClaimTypes.Name, username),
-            new Claim(ClaimTypes.Role, "User")
-        }, CookieAuthenticationDefaults.AuthenticationScheme);
-
         await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-            new ClaimsPrincipal(identity), new AuthenticationProperties { IsPersistent = false });
-        return RedirectToAction(nameof(Dashboard));
+            AccountService.PrincipalFor(account), new AuthenticationProperties { IsPersistent = false });
+        return account.MustChangePassword
+            ? RedirectToAction("ChangePassword", "Account")
+            : RedirectToAction(nameof(Dashboard));
     }
 
     [HttpGet]
