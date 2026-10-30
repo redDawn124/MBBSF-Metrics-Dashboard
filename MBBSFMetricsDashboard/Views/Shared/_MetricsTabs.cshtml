@@ -6,6 +6,16 @@
         new { Name = "Google Forms", Id = "google-forms" },
         new { Name = "Cognito", Id = "cognito" }
     };
+    var floridaCounties = new[]
+    {
+        "Alachua", "Baker", "Bay", "Bradford", "Brevard", "Broward", "Calhoun", "Charlotte", "Citrus", "Clay",
+        "Collier", "Columbia", "DeSoto", "Dixie", "Duval", "Escambia", "Flagler", "Franklin", "Gadsden", "Gilchrist",
+        "Glades", "Gulf", "Hamilton", "Hardee", "Hendry", "Hernando", "Highlands", "Hillsborough", "Holmes", "Indian River",
+        "Jackson", "Jefferson", "Lafayette", "Lake", "Lee", "Leon", "Levy", "Liberty", "Madison", "Manatee",
+        "Marion", "Martin", "Miami-Dade", "Monroe", "Nassau", "Okaloosa", "Okeechobee", "Orange", "Osceola", "Palm Beach",
+        "Pasco", "Pinellas", "Polk", "Putnam", "St. Johns", "St. Lucie", "Santa Rosa", "Sarasota", "Seminole", "Sumter",
+        "Suwannee", "Taylor", "Union", "Volusia", "Wakulla", "Walton", "Washington"
+    };
 }
 
 <div class="metrics-tabs">
@@ -33,7 +43,7 @@
                  aria-labelledby="@(source.Id)-tab" tabindex="0">
                 <div id="@source.Id-dashboard-view">
                     <div class="d-flex flex-wrap gap-2 mb-3">
-                        @if (canEdit && (source.Id == "coursera" || source.Id == "google-forms"))
+                        @if (canEdit && (source.Id == "coursera" || source.Id == "google-forms" || source.Id == "cognito"))
                         {
                             <button type="button" class="btn btn-outline-secondary" data-filter-open
                                     aria-controls="@source.Id-filter-panel" aria-expanded="false">
@@ -161,6 +171,62 @@
                         <div class="google-forms-filter-actions d-flex flex-wrap gap-2">
                             <button type="button" class="btn btn-primary" data-filter-close>Apply filter</button>
                             <button type="button" class="btn btn-outline-secondary" data-filter-clear>Clear</button>
+                            <button type="button" class="btn btn-outline-secondary" data-filter-close>Cancel</button>
+                        </div>
+                    </section>
+                }
+
+                @if (canEdit && source.Id == "cognito")
+                {
+                    <section class="dashboard-filter-panel cognito-filter-panel" id="cognito-filter-panel" aria-labelledby="cognito-filter-title" hidden>
+                        <h2 class="google-forms-filter-title" id="cognito-filter-title">Filter Cognito data by</h2>
+
+                        <div class="cognito-filter-fields">
+                            <div class="google-forms-filter-field cognito-county-field">
+                                <label class="form-label" for="cognito-county">County</label>
+                                <select class="form-select" id="cognito-county" data-cognito-county>
+                                    <option value="">Select county</option>
+                                    @foreach (var county in floridaCounties)
+                                    {
+                                        <option value="@county">@county County</option>
+                                    }
+                                </select>
+                            </div>
+
+                            <div class="google-forms-filter-field cognito-school-field" id="cognito-school-field" data-cognito-school-field hidden>
+                                <label class="form-label" for="cognito-school">School</label>
+                                <select class="form-select" id="cognito-school">
+                                    <option value="">Schools in county</option>
+                                    <option value="school-placeholder-1">High school placeholder 1</option>
+                                    <option value="school-placeholder-2">High school placeholder 2</option>
+                                    <option value="school-placeholder-3">High school placeholder 3</option>
+                                    <option value="school-placeholder-4">High school placeholder 4</option>
+                                    <option value="school-placeholder-5">High school placeholder 5</option>
+                                </select>
+                                <small class="form-text">Placeholder school options will be replaced with the selected county's high schools.</small>
+                            </div>
+
+                            <div class="google-forms-filter-field cognito-major-field">
+                                <label class="form-label" for="cognito-major">Intended major</label>
+                                <select class="form-select" id="cognito-major">
+                                    <option value="">Select major</option>
+                                    <option>Accounting</option>
+                                    <option>Biology</option>
+                                    <option>Business</option>
+                                    <option>Computer Science</option>
+                                    <option>Education</option>
+                                    <option>Engineering</option>
+                                    <option>Health Sciences</option>
+                                    <option>Nursing</option>
+                                    <option>Psychology</option>
+                                    <option>Undecided</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="google-forms-filter-actions d-flex flex-wrap gap-2">
+                            <button type="button" class="btn btn-primary" data-filter-close>Apply filter</button>
+                            <button type="button" class="btn btn-outline-secondary" data-cognito-filter-clear>Clear</button>
                             <button type="button" class="btn btn-outline-secondary" data-filter-close>Cancel</button>
                         </div>
                     </section>

@@ -96,6 +96,43 @@ body {
   max-width: 15.625rem;
 }
 
+.cognito-filter-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 15.625rem));
+  grid-template-areas: "county school" "major .";
+  gap: 1rem;
+  max-width: 32.25rem;
+}
+
+.cognito-county-field {
+  grid-area: county;
+}
+
+.cognito-school-field {
+  grid-area: school;
+}
+
+.cognito-major-field {
+  grid-area: major;
+}
+
+.cognito-filter-panel .form-text {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.75rem;
+}
+
+.cognito-filter-panel .google-forms-filter-actions {
+  margin-top: 5.9rem;
+}
+
+@media (max-width: 575.98px) {
+  .cognito-filter-fields {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "county" "school" "major";
+  }
+}
+
 .google-forms-filter-field .form-label {
   margin-bottom: 0.35rem;
   font-size: 0.8rem;

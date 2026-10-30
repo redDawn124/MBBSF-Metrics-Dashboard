@@ -119,5 +119,37 @@
                 });
             });
         });
+
+        document.querySelectorAll("[data-cognito-county]").forEach(function (countySelect) {
+            countySelect.addEventListener("change", function () {
+                var panel = countySelect.closest(".cognito-filter-panel");
+                var schoolField = panel && panel.querySelector("[data-cognito-school-field]");
+                var schoolSelect = schoolField && schoolField.querySelector("select");
+                if (!schoolField || !schoolSelect) {
+                    return;
+                }
+
+                schoolField.hidden = !countySelect.value;
+                schoolSelect.selectedIndex = 0;
+            });
+        });
+
+        document.querySelectorAll("[data-cognito-filter-clear]").forEach(function (button) {
+            button.addEventListener("click", function () {
+                var panel = button.closest(".cognito-filter-panel");
+                if (!panel) {
+                    return;
+                }
+
+                panel.querySelectorAll("select").forEach(function (select) {
+                    select.selectedIndex = 0;
+                });
+
+                var schoolField = panel.querySelector("[data-cognito-school-field]");
+                if (schoolField) {
+                    schoolField.hidden = true;
+                }
+            });
+        });
     });
 })();
