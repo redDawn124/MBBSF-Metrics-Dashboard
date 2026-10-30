@@ -69,6 +69,43 @@
             });
         });
 
+        document.querySelectorAll("[data-summary-open]").forEach(function (button) {
+            button.addEventListener("click", function () {
+                var panel = document.getElementById(button.getAttribute("aria-controls"));
+                var dashboardView = button.closest(".tab-pane").querySelector("[id$='-dashboard-view']");
+                if (!panel || !dashboardView) {
+                    return;
+                }
+
+                var exitButton = panel.querySelector("[data-summary-close]");
+                if (!exitButton) {
+                    return;
+                }
+
+                dashboardView.hidden = true;
+                panel.hidden = false;
+                button.setAttribute("aria-expanded", "true");
+                exitButton.focus();
+            });
+        });
+
+        document.querySelectorAll("[data-summary-close]").forEach(function (button) {
+            button.addEventListener("click", function () {
+                var panel = button.closest(".dashboard-summary-panel");
+                var tabPane = button.closest(".tab-pane");
+                var openButton = tabPane && tabPane.querySelector("[data-summary-open]");
+                var dashboardView = tabPane && tabPane.querySelector("[id$='-dashboard-view']");
+                if (!panel || !openButton || !dashboardView) {
+                    return;
+                }
+
+                panel.hidden = true;
+                dashboardView.hidden = false;
+                openButton.setAttribute("aria-expanded", "false");
+                openButton.focus();
+            });
+        });
+
         document.querySelectorAll("[data-filter-open]").forEach(function (button) {
             button.addEventListener("click", function () {
                 var panel = document.getElementById(button.getAttribute("aria-controls"));

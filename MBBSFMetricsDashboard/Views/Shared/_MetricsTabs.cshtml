@@ -54,7 +54,10 @@
                         {
                             <button type="button" class="btn btn-outline-secondary">Filter Data</button>
                         }
-                        <button type="button" class="btn btn-outline-secondary">Summarize Data</button>
+                        <button type="button" class="btn btn-outline-secondary" data-summary-open
+                                aria-controls="@source.Id-summary-panel" aria-expanded="false">
+                            Summarize Data
+                        </button>
                     </div>
 
                     <div class="row g-3">
@@ -231,6 +234,27 @@
                         </div>
                     </section>
                 }
+
+                <section class="dashboard-summary-panel" id="@source.Id-summary-panel" aria-labelledby="@source.Id-summary-title" hidden>
+                    <h2 class="dashboard-summary-title" id="@source.Id-summary-title">Summarized data for @source.Name:</h2>
+                    <p class="dashboard-summary-text">
+                        This sample summary highlights the overall activity in the @source.Name data. The available information suggests steady participation, with changes in engagement across the reporting period.
+                    </p>
+                    <h3 class="dashboard-summary-trends-title">Trends to consider</h3>
+                    <ul class="dashboard-summary-trends">
+                        <li>Participation may vary over time; compare activity across reporting periods.</li>
+                        <li>Some groups may show higher engagement than others.</li>
+                        <li>Review these sample trends alongside the underlying data before drawing conclusions.</li>
+                    </ul>
+                    <div class="dashboard-summary-actions">
+                        <button type="button" class="btn btn-outline-secondary" data-summary-close>
+                            <svg class="dashboard-summary-exit-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                                <path d="M3 3l10 10M13 3L3 13" />
+                            </svg>
+                            Exit
+                        </button>
+                    </div>
+                </section>
             </div>
         }
     </div>

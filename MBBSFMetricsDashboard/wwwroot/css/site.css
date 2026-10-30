@@ -84,6 +84,60 @@ body {
   min-height: 23.5rem;
 }
 
+.dashboard-summary-panel {
+  display: flex;
+  flex-direction: column;
+  min-height: 23.5rem;
+  padding: 1rem;
+  border: 1px solid var(--bs-border-color);
+  border-radius: 0.375rem;
+  background-color: #fff;
+}
+
+.dashboard-summary-panel[hidden] {
+  display: none;
+}
+
+.dashboard-summary-title,
+.dashboard-summary-trends-title {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.dashboard-summary-text {
+  max-width: 48rem;
+  margin: 0.25rem 0 1.75rem;
+  line-height: 1.7;
+}
+
+.dashboard-summary-trends {
+  display: grid;
+  gap: 0.85rem;
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.dashboard-summary-trends li::marker {
+  color: var(--bs-primary);
+}
+
+.dashboard-summary-actions {
+  margin-top: auto;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--bs-border-color);
+}
+
+.dashboard-summary-exit-icon {
+  width: 0.875rem;
+  height: 0.875rem;
+  margin-right: 0.25rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-width: 1.25;
+  vertical-align: -0.1rem;
+}
+
 .google-forms-filter-title {
   margin-bottom: 1rem;
   font-size: 1rem;
