@@ -71,3 +71,46 @@ body {
   position: relative;
   height: 20rem;
 }
+
+.coursera-filter-panel {
+  min-height: 23.5rem;
+  padding: 1rem;
+  border: 1px solid var(--bs-border-color);
+  border-radius: 0.375rem;
+  background-color: #fff;
+}
+
+.coursera-filter-title {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.coursera-filter-badge {
+  padding: 0.2rem 0.55rem;
+  color: #0d6efd;
+  font-size: 0.75rem;
+  border-radius: 999px;
+  background-color: #eaf1ff;
+}
+
+.coursera-filter-options {
+  display: grid;
+  gap: 0.4rem;
+  margin: 0 0 1rem;
+  padding: 0 0 1rem;
+  border: 0;
+  border-bottom: 1px solid var(--bs-border-color);
+}
+
+.coursera-filter-options .form-check {
+  min-height: auto;
+  margin: 0;
+}
+
+.coursera-filter-options .form-check-input {
+  margin-top: 0.2rem;
+}
+
+.coursera-filter-actions .btn {
+  min-width: 4.5rem;
+}

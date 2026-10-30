@@ -31,43 +31,98 @@
             var isActive = i == 0;
             <div class="tab-pane fade @(isActive ? "show active" : null)" id="@(source.Id)-pane" role="tabpanel"
                  aria-labelledby="@(source.Id)-tab" tabindex="0">
-                <div class="d-flex flex-wrap gap-2 mb-3">
-                    <button type="button" class="btn btn-outline-secondary">Filter Data</button>
-                    <button type="button" class="btn btn-outline-secondary">Summarize Data</button>
+                <div id="@source.Id-dashboard-view">
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                        @if (canEdit && source.Id == "coursera")
+                        {
+                            <button type="button" class="btn btn-outline-secondary" data-filter-open
+                                    aria-controls="coursera-filter-panel" aria-expanded="false">
+                                Filter By
+                            </button>
+                        }
+                        else
+                        {
+                            <button type="button" class="btn btn-outline-secondary">Filter Data</button>
+                        }
+                        <button type="button" class="btn btn-outline-secondary">Summarize Data</button>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-lg-7">
+                            <section class="metrics-panel h-100">
+                                <h2 class="metrics-panel-title">Data</h2>
+                                <div class="metrics-table-shell" aria-label="@source.Name data table">
+                                    <p class="text-body-secondary small mb-0">No data uploaded yet.</p>
+                                </div>
+                            </section>
+                        </div>
+                        <div class="col-lg-5">
+                            <section class="metrics-panel h-100">
+                                <h2 class="metrics-panel-title">Visual data</h2>
+                                <div class="metrics-visual-shell" aria-label="@source.Name visual data">
+                                    <p class="text-body-secondary small mb-0">Visualization will appear here.</p>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end mt-3">
+                        @if (canEdit)
+                        {
+                            <button type="button" class="btn btn-primary" disabled
+                                    title="File upload is not available yet">
+                                Upload data
+                            </button>
+                        }
+                        else
+                        {
+                            <p class="small text-body-secondary mb-0">Ask an administrator to upload data.</p>
+                        }
+                    </div>
                 </div>
 
-                <div class="row g-3">
-                    <div class="col-lg-7">
-                        <section class="metrics-panel h-100">
-                            <h2 class="metrics-panel-title">Data</h2>
-                            <div class="metrics-table-shell" aria-label="@source.Name data table">
-                                <p class="text-body-secondary small mb-0">No data uploaded yet.</p>
-                            </div>
-                        </section>
-                    </div>
-                    <div class="col-lg-5">
-                        <section class="metrics-panel h-100">
-                            <h2 class="metrics-panel-title">Visual data</h2>
-                            <div class="metrics-visual-shell" aria-label="@source.Name visual data">
-                                <p class="text-body-secondary small mb-0">Visualization will appear here.</p>
-                            </div>
-                        </section>
-                    </div>
-                </div>
+                @if (canEdit && source.Id == "coursera")
+                {
+                    <section class="coursera-filter-panel" id="coursera-filter-panel" aria-labelledby="coursera-filter-title" hidden>
+                        <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-4">
+                            <h2 class="coursera-filter-title mb-0" id="coursera-filter-title">Filter Coursera Data By:</h2>
+                            <span class="coursera-filter-badge">Illustrative selections</span>
+                        </div>
 
-                <div class="d-flex justify-content-end mt-3">
-                    @if (canEdit)
-                    {
-                        <button type="button" class="btn btn-primary" disabled
-                                title="File upload is not available yet">
-                            Upload data
-                        </button>
-                    }
-                    else
-                    {
-                        <p class="small text-body-secondary mb-0">Ask an administrator to upload data.</p>
-                    }
-                </div>
+                        <fieldset class="coursera-filter-options">
+                            <legend class="visually-hidden">Choose how to filter Coursera data</legend>
+                            <label class="form-check">
+                                <input class="form-check-input" type="radio" name="coursera-filter" value="student-name-ascending" checked />
+                                <span class="form-check-label">Student Name (A–Z)</span>
+                            </label>
+                            <label class="form-check">
+                                <input class="form-check-input" type="radio" name="coursera-filter" value="course-name-ascending" />
+                                <span class="form-check-label">Course Name (A–Z)</span>
+                            </label>
+                            <label class="form-check">
+                                <input class="form-check-input" type="radio" name="coursera-filter" value="total-hours-ascending" />
+                                <span class="form-check-label">Total Hours (Ascending)</span>
+                            </label>
+                            <label class="form-check">
+                                <input class="form-check-input" type="radio" name="coursera-filter" value="total-hours-descending" />
+                                <span class="form-check-label">Total Hours (Descending)</span>
+                            </label>
+                            <label class="form-check">
+                                <input class="form-check-input" type="radio" name="coursera-filter" value="completion-ascending" />
+                                <span class="form-check-label">Completion % (Ascending)</span>
+                            </label>
+                            <label class="form-check">
+                                <input class="form-check-input" type="radio" name="coursera-filter" value="completion-descending" />
+                                <span class="form-check-label">Completion % (Descending)</span>
+                            </label>
+                        </fieldset>
+
+                        <div class="coursera-filter-actions d-flex flex-wrap gap-2">
+                            <button type="button" class="btn btn-primary" data-filter-close>Apply Filter</button>
+                            <button type="button" class="btn btn-outline-secondary" data-filter-close>Cancel</button>
+                        </div>
+                    </section>
+                }
             </div>
         }
     </div>
