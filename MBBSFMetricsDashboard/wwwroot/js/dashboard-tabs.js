@@ -80,13 +80,16 @@
                 dashboardView.hidden = true;
                 panel.hidden = false;
                 button.setAttribute("aria-expanded", "true");
-                panel.querySelector("input:checked").focus();
+                var firstControl = panel.querySelector("input:checked, select, input");
+                if (firstControl) {
+                    firstControl.focus();
+                }
             });
         });
 
         document.querySelectorAll("[data-filter-close]").forEach(function (button) {
             button.addEventListener("click", function () {
-                var panel = button.closest(".coursera-filter-panel");
+                var panel = button.closest(".dashboard-filter-panel");
                 var tabPane = button.closest(".tab-pane");
                 var openButton = tabPane && tabPane.querySelector("[data-filter-open]");
                 var dashboardView = tabPane && tabPane.querySelector("[id$='-dashboard-view']");
@@ -98,6 +101,22 @@
                 dashboardView.hidden = false;
                 openButton.setAttribute("aria-expanded", "false");
                 openButton.focus();
+            });
+        });
+
+        document.querySelectorAll("[data-filter-clear]").forEach(function (button) {
+            button.addEventListener("click", function () {
+                var panel = button.closest(".google-forms-filter-panel");
+                if (!panel) {
+                    return;
+                }
+
+                panel.querySelectorAll("select").forEach(function (select) {
+                    select.selectedIndex = 0;
+                });
+                panel.querySelectorAll("input[type='number']").forEach(function (input) {
+                    input.value = "";
+                });
             });
         });
     });

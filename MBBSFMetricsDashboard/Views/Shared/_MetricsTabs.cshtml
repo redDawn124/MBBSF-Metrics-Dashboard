@@ -33,10 +33,10 @@
                  aria-labelledby="@(source.Id)-tab" tabindex="0">
                 <div id="@source.Id-dashboard-view">
                     <div class="d-flex flex-wrap gap-2 mb-3">
-                        @if (canEdit && source.Id == "coursera")
+                        @if (canEdit && (source.Id == "coursera" || source.Id == "google-forms"))
                         {
                             <button type="button" class="btn btn-outline-secondary" data-filter-open
-                                    aria-controls="coursera-filter-panel" aria-expanded="false">
+                                    aria-controls="@source.Id-filter-panel" aria-expanded="false">
                                 Filter By
                             </button>
                         }
@@ -83,7 +83,7 @@
 
                 @if (canEdit && source.Id == "coursera")
                 {
-                    <section class="coursera-filter-panel" id="coursera-filter-panel" aria-labelledby="coursera-filter-title" hidden>
+                    <section class="dashboard-filter-panel coursera-filter-panel" id="coursera-filter-panel" aria-labelledby="coursera-filter-title" hidden>
                         <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-4">
                             <h2 class="coursera-filter-title mb-0" id="coursera-filter-title">Filter Coursera Data By:</h2>
                             <span class="coursera-filter-badge">Illustrative selections</span>
@@ -119,6 +119,48 @@
 
                         <div class="coursera-filter-actions d-flex flex-wrap gap-2">
                             <button type="button" class="btn btn-primary" data-filter-close>Apply Filter</button>
+                            <button type="button" class="btn btn-outline-secondary" data-filter-close>Cancel</button>
+                        </div>
+                    </section>
+                }
+
+                @if (canEdit && source.Id == "google-forms")
+                {
+                    <section class="dashboard-filter-panel google-forms-filter-panel" id="google-forms-filter-panel" aria-labelledby="google-forms-filter-title" hidden>
+                        <h2 class="google-forms-filter-title" id="google-forms-filter-title">Filter Google Forms data by</h2>
+
+                        <div class="google-forms-filter-fields">
+                            <div class="google-forms-filter-field">
+                                <label class="form-label" for="google-forms-mentor">Mentor</label>
+                                <select class="form-select" id="google-forms-mentor">
+                                    <option value="">All mentors</option>
+                                    <option value="mentor-1">Mentor 1</option>
+                                    <option value="mentor-2">Mentor 2</option>
+                                    <option value="mentor-3">Mentor 3</option>
+                                    <option value="mentor-4">Mentor 4</option>
+                                    <option value="mentor-5">Mentor 5</option>
+                                </select>
+                            </div>
+
+                            <div class="google-forms-filter-field">
+                                <label class="form-label" for="google-forms-communication-method">Communication method</label>
+                                <select class="form-select" id="google-forms-communication-method">
+                                    <option value="">All methods</option>
+                                    <option value="text-message">Text message</option>
+                                    <option value="email">Email</option>
+                                    <option value="in-person">In-person</option>
+                                </select>
+                            </div>
+
+                            <div class="google-forms-filter-field">
+                                <label class="form-label" for="google-forms-frequency">Frequency</label>
+                                <input class="form-control" id="google-forms-frequency" type="number" min="0" step="1" placeholder="Enter amount" />
+                            </div>
+                        </div>
+
+                        <div class="google-forms-filter-actions d-flex flex-wrap gap-2">
+                            <button type="button" class="btn btn-primary" data-filter-close>Apply filter</button>
+                            <button type="button" class="btn btn-outline-secondary" data-filter-clear>Clear</button>
                             <button type="button" class="btn btn-outline-secondary" data-filter-close>Cancel</button>
                         </div>
                     </section>

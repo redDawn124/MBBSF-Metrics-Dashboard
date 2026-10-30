@@ -72,12 +72,40 @@ body {
   height: 20rem;
 }
 
-.coursera-filter-panel {
+.dashboard-filter-panel {
   min-height: 23.5rem;
   padding: 1rem;
   border: 1px solid var(--bs-border-color);
   border-radius: 0.375rem;
   background-color: #fff;
+}
+
+.coursera-filter-panel {
+  min-height: 23.5rem;
+}
+
+.google-forms-filter-title {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.google-forms-filter-fields {
+  display: grid;
+  gap: 1rem;
+  max-width: 15.625rem;
+}
+
+.google-forms-filter-field .form-label {
+  margin-bottom: 0.35rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.google-forms-filter-actions {
+  margin-top: 5.9rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--bs-border-color);
 }
 
 .coursera-filter-title {
