@@ -1,103 +1,74 @@
 @{
     var canEdit = ViewData["CanEdit"] as bool? ?? false;
+    var sources = new[]
+    {
+        new { Name = "Coursera", Id = "coursera" },
+        new { Name = "Google Forms", Id = "google-forms" },
+        new { Name = "Cognito", Id = "cognito" }
+    };
 }
 
 <div class="metrics-tabs">
     <ul class="nav nav-tabs nav-fill" id="metricsTabs" role="tablist">
-        <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="coursera-tab" type="button" role="tab"
-                    data-bs-toggle="tab" data-bs-target="#coursera-pane"
-                    aria-controls="coursera-pane" aria-selected="true">
-                Coursera
-            </button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="google-forms-tab" type="button" role="tab"
-                    data-bs-toggle="tab" data-bs-target="#google-forms-pane"
-                    aria-controls="google-forms-pane" aria-selected="false">
-                Google Forms
-            </button>
-        </li>
-        <li class="nav-item" role="presentation">
-            <button class="nav-link" id="cognito-tab" type="button" role="tab"
-                    data-bs-toggle="tab" data-bs-target="#cognito-pane"
-                    aria-controls="cognito-pane" aria-selected="false">
-                Cognito
-            </button>
-        </li>
+        @for (var i = 0; i < sources.Length; i++)
+        {
+            var source = sources[i];
+            var isActive = i == 0;
+            <li class="nav-item" role="presentation">
+                <button class="nav-link @(isActive ? "active" : null)" id="@(source.Id)-tab" type="button" role="tab"
+                        data-bs-toggle="tab" data-bs-target="#@(source.Id)-pane"
+                        aria-controls="@(source.Id)-pane" aria-selected="@(isActive ? "true" : "false")">
+                    @source.Name
+                </button>
+            </li>
+        }
     </ul>
 
     <div class="tab-content border border-top-0 rounded-bottom bg-white p-3" id="metricsTabContent">
-        <div class="tab-pane fade show active" id="coursera-pane" role="tabpanel"
-             aria-labelledby="coursera-tab" tabindex="0">
-            <div class="metrics-empty text-center py-5" data-empty-state>
-                <p class="metrics-empty-title mb-1">No Coursera data yet</p>
-                <p class="text-body-secondary mb-0">
-                    Imported Coursera metrics will appear here as a table and chart.
-                </p>
-                @if (canEdit)
-                {
-                    <button type="button" class="btn btn-sm btn-outline-primary mt-3" disabled
-                            title="CSV import is not available yet">
-                        Import CSV
-                    </button>
-                }
-                else
-                {
-                    <p class="small text-body-secondary mb-0 mt-2">
-                        Ask an administrator to import data.
-                    </p>
-                }
-            </div>
-            @* Future: <div class="table-responsive">…</div> and <canvas data-chart-config="…"> *@
-        </div>
+        @for (var i = 0; i < sources.Length; i++)
+        {
+            var source = sources[i];
+            var isActive = i == 0;
+            <div class="tab-pane fade @(isActive ? "show active" : null)" id="@(source.Id)-pane" role="tabpanel"
+                 aria-labelledby="@(source.Id)-tab" tabindex="0">
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                    <button type="button" class="btn btn-outline-secondary">Filter Data</button>
+                    <button type="button" class="btn btn-outline-secondary">Summarize Data</button>
+                </div>
 
-        <div class="tab-pane fade" id="google-forms-pane" role="tabpanel"
-             aria-labelledby="google-forms-tab" tabindex="0">
-            <div class="metrics-empty text-center py-5" data-empty-state>
-                <p class="metrics-empty-title mb-1">No Google Forms data yet</p>
-                <p class="text-body-secondary mb-0">
-                    Imported Google Forms metrics will appear here as a table and chart.
-                </p>
-                @if (canEdit)
-                {
-                    <button type="button" class="btn btn-sm btn-outline-primary mt-3" disabled
-                            title="CSV import is not available yet">
-                        Import CSV
-                    </button>
-                }
-                else
-                {
-                    <p class="small text-body-secondary mb-0 mt-2">
-                        Ask an administrator to import data.
-                    </p>
-                }
-            </div>
-            @* Future: <div class="table-responsive">…</div> and <canvas data-chart-config="…"> *@
-        </div>
+                <div class="row g-3">
+                    <div class="col-lg-7">
+                        <section class="metrics-panel h-100">
+                            <h2 class="metrics-panel-title">Data</h2>
+                            <div class="metrics-table-shell" aria-label="@source.Name data table">
+                                <p class="text-body-secondary small mb-0">No data uploaded yet.</p>
+                            </div>
+                        </section>
+                    </div>
+                    <div class="col-lg-5">
+                        <section class="metrics-panel h-100">
+                            <h2 class="metrics-panel-title">Visual data</h2>
+                            <div class="metrics-visual-shell" aria-label="@source.Name visual data">
+                                <p class="text-body-secondary small mb-0">Visualization will appear here.</p>
+                            </div>
+                        </section>
+                    </div>
+                </div>
 
-        <div class="tab-pane fade" id="cognito-pane" role="tabpanel"
-             aria-labelledby="cognito-tab" tabindex="0">
-            <div class="metrics-empty text-center py-5" data-empty-state>
-                <p class="metrics-empty-title mb-1">No Cognito data yet</p>
-                <p class="text-body-secondary mb-0">
-                    Imported Cognito metrics will appear here as a table and chart.
-                </p>
-                @if (canEdit)
-                {
-                    <button type="button" class="btn btn-sm btn-outline-primary mt-3" disabled
-                            title="CSV import is not available yet">
-                        Import CSV
-                    </button>
-                }
-                else
-                {
-                    <p class="small text-body-secondary mb-0 mt-2">
-                        Ask an administrator to import data.
-                    </p>
-                }
+                <div class="d-flex justify-content-end mt-3">
+                    @if (canEdit)
+                    {
+                        <button type="button" class="btn btn-primary" disabled
+                                title="File upload is not available yet">
+                            Upload data
+                        </button>
+                    }
+                    else
+                    {
+                        <p class="small text-body-secondary mb-0">Ask an administrator to upload data.</p>
+                    }
+                </div>
             </div>
-            @* Future: <div class="table-responsive">…</div> and <canvas data-chart-config="…"> *@
-        </div>
+        }
     </div>
 </div>

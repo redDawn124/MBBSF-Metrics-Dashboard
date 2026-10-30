@@ -39,13 +39,32 @@ body {
   font-weight: 600;
 }
 
-.metrics-empty {
-  max-width: 32rem;
-  margin-inline: auto;
+.metrics-panel {
+  display: flex;
+  flex-direction: column;
 }
 
-.metrics-empty-title {
+.metrics-panel-title {
+  margin-bottom: 0.5rem;
+  color: var(--bs-secondary-color);
+  font-size: 0.8125rem;
   font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.metrics-table-shell,
+.metrics-visual-shell {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
+  min-height: 20rem;
+  padding: 1rem;
+  text-align: center;
+  border: 1px solid var(--bs-border-color);
+  border-radius: 0.5rem;
+  background-color: #fff;
 }
 
 .metrics-chart {
