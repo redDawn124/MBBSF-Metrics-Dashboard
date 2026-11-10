@@ -1,0 +1,47 @@
+@model MetricSourceViewModel
+
+<section class="dashboard-filter-panel cognito-filter-panel" id="@Model.Id-filter-panel" aria-labelledby="@Model.Id-filter-title" hidden>
+    <h2 class="google-forms-filter-title" id="@Model.Id-filter-title">Filter Cognito data by</h2>
+
+    <div class="cognito-filter-fields">
+        <div class="google-forms-filter-field cognito-county-field">
+            <label class="form-label" for="cognito-county">County</label>
+            <select class="form-select" id="cognito-county" name="County" data-cognito-county>
+                <option value="">Select county</option>
+                @foreach (var county in Model.FloridaCountyOptions)
+                {
+                    <option value="@county">@county County</option>
+                }
+            </select>
+        </div>
+
+        <div class="google-forms-filter-field cognito-school-field" id="cognito-school-field" data-cognito-school-field hidden>
+            <label class="form-label" for="cognito-school">School</label>
+            <select class="form-select" id="cognito-school" name="School">
+                <option value="">Schools in county</option>
+                @foreach (var school in Model.SchoolOptions)
+                {
+                    <option value="@school">@school</option>
+                }
+            </select>
+            <small class="form-text">Placeholder school options will be replaced with the selected county's high schools.</small>
+        </div>
+
+        <div class="google-forms-filter-field cognito-major-field">
+            <label class="form-label" for="cognito-major">Intended major</label>
+            <select class="form-select" id="cognito-major" name="Major">
+                <option value="">Select major</option>
+                @foreach (var major in Model.MajorOptions)
+                {
+                    <option value="@major">@major</option>
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="google-forms-filter-actions d-flex flex-wrap gap-2">
+        <button type="button" class="btn btn-primary" data-filter-close>Apply filter</button>
+        <button type="button" class="btn btn-outline-secondary" data-cognito-filter-clear>Clear</button>
+        <button type="button" class="btn btn-outline-secondary" data-filter-close>Cancel</button>
+    </div>
+</section>

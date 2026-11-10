@@ -1,28 +1,10 @@
-@{
-    var canEdit = ViewData["CanEdit"] as bool? ?? false;
-    var sources = new[]
-    {
-        new { Name = "Coursera", Id = "coursera" },
-        new { Name = "Google Forms", Id = "google-forms" },
-        new { Name = "Cognito", Id = "cognito" }
-    };
-    var floridaCounties = new[]
-    {
-        "Alachua", "Baker", "Bay", "Bradford", "Brevard", "Broward", "Calhoun", "Charlotte", "Citrus", "Clay",
-        "Collier", "Columbia", "DeSoto", "Dixie", "Duval", "Escambia", "Flagler", "Franklin", "Gadsden", "Gilchrist",
-        "Glades", "Gulf", "Hamilton", "Hardee", "Hendry", "Hernando", "Highlands", "Hillsborough", "Holmes", "Indian River",
-        "Jackson", "Jefferson", "Lafayette", "Lake", "Lee", "Leon", "Levy", "Liberty", "Madison", "Manatee",
-        "Marion", "Martin", "Miami-Dade", "Monroe", "Nassau", "Okaloosa", "Okeechobee", "Orange", "Osceola", "Palm Beach",
-        "Pasco", "Pinellas", "Polk", "Putnam", "St. Johns", "St. Lucie", "Santa Rosa", "Sarasota", "Seminole", "Sumter",
-        "Suwannee", "Taylor", "Union", "Volusia", "Wakulla", "Walton", "Washington"
-    };
-}
+@model DashboardViewModel
 
 <div class="metrics-tabs">
     <ul class="nav nav-tabs nav-fill" id="metricsTabs" role="tablist">
-        @for (var i = 0; i < sources.Length; i++)
+        @for (var i = 0; i < Model.Sources.Count; i++)
         {
-            var source = sources[i];
+            var source = Model.Sources[i];
             var isActive = i == 0;
             <li class="nav-item" role="presentation">
                 <button class="nav-link @(isActive ? "active" : null)" id="@(source.Id)-tab" type="button" role="tab"
@@ -35,15 +17,15 @@
     </ul>
 
     <div class="tab-content border border-top-0 rounded-bottom bg-white p-3" id="metricsTabContent">
-        @for (var i = 0; i < sources.Length; i++)
+        @for (var i = 0; i < Model.Sources.Count; i++)
         {
-            var source = sources[i];
+            var source = Model.Sources[i];
             var isActive = i == 0;
             <div class="tab-pane fade @(isActive ? "show active" : null)" id="@(source.Id)-pane" role="tabpanel"
                  aria-labelledby="@(source.Id)-tab" tabindex="0">
                 <div id="@source.Id-dashboard-view">
                     <div class="d-flex flex-wrap gap-2 mb-3">
-                        @if (canEdit && (source.Id == "coursera" || source.Id == "google-forms" || source.Id == "cognito"))
+                        @if (Model.CanEdit)
                         {
                             <button type="button" class="btn btn-outline-secondary" data-filter-open
                                     aria-controls="@source.Id-filter-panel" aria-expanded="false">
@@ -80,7 +62,7 @@
                     </div>
 
                     <div class="d-flex justify-content-end mt-3">
-                        @if (canEdit)
+                        @if (Model.CanEdit)
                         {
                             <button type="button" class="btn btn-primary" disabled
                                     title="File upload is not available yet">
@@ -94,167 +76,22 @@
                     </div>
                 </div>
 
-                @if (canEdit && source.Id == "coursera")
+                @if (Model.CanEdit && source.FilterKind == DashboardFilterKind.Coursera)
                 {
-                    <section class="dashboard-filter-panel coursera-filter-panel" id="coursera-filter-panel" aria-labelledby="coursera-filter-title" hidden>
-                        <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-4">
-                            <h2 class="coursera-filter-title mb-0" id="coursera-filter-title">Filter Coursera Data By:</h2>
-                            <span class="coursera-filter-badge">Illustrative selections</span>
-                        </div>
-
-                        <fieldset class="coursera-filter-options">
-                            <legend class="visually-hidden">Choose how to filter Coursera data</legend>
-                            <label class="form-check">
-                                <input class="form-check-input" type="radio" name="coursera-filter" value="student-name-ascending" checked />
-                                <span class="form-check-label">Student Name (A–Z)</span>
-                            </label>
-                            <label class="form-check">
-                                <input class="form-check-input" type="radio" name="coursera-filter" value="course-name-ascending" />
-                                <span class="form-check-label">Course Name (A–Z)</span>
-                            </label>
-                            <label class="form-check">
-                                <input class="form-check-input" type="radio" name="coursera-filter" value="total-hours-ascending" />
-                                <span class="form-check-label">Total Hours (Ascending)</span>
-                            </label>
-                            <label class="form-check">
-                                <input class="form-check-input" type="radio" name="coursera-filter" value="total-hours-descending" />
-                                <span class="form-check-label">Total Hours (Descending)</span>
-                            </label>
-                            <label class="form-check">
-                                <input class="form-check-input" type="radio" name="coursera-filter" value="completion-ascending" />
-                                <span class="form-check-label">Completion % (Ascending)</span>
-                            </label>
-                            <label class="form-check">
-                                <input class="form-check-input" type="radio" name="coursera-filter" value="completion-descending" />
-                                <span class="form-check-label">Completion % (Descending)</span>
-                            </label>
-                        </fieldset>
-
-                        <div class="coursera-filter-actions d-flex flex-wrap gap-2">
-                            <button type="button" class="btn btn-primary" data-filter-close>Apply Filter</button>
-                            <button type="button" class="btn btn-outline-secondary" data-filter-close>Cancel</button>
-                        </div>
-                    </section>
+                    <partial name="Filters/_CourseraFilter" model="source" />
                 }
 
-                @if (canEdit && source.Id == "google-forms")
+                @if (Model.CanEdit && source.FilterKind == DashboardFilterKind.GoogleForms)
                 {
-                    <section class="dashboard-filter-panel google-forms-filter-panel" id="google-forms-filter-panel" aria-labelledby="google-forms-filter-title" hidden>
-                        <h2 class="google-forms-filter-title" id="google-forms-filter-title">Filter Google Forms data by</h2>
-
-                        <div class="google-forms-filter-fields">
-                            <div class="google-forms-filter-field">
-                                <label class="form-label" for="google-forms-mentor">Mentor</label>
-                                <select class="form-select" id="google-forms-mentor">
-                                    <option value="">All mentors</option>
-                                    <option value="mentor-1">Mentor 1</option>
-                                    <option value="mentor-2">Mentor 2</option>
-                                    <option value="mentor-3">Mentor 3</option>
-                                    <option value="mentor-4">Mentor 4</option>
-                                    <option value="mentor-5">Mentor 5</option>
-                                </select>
-                            </div>
-
-                            <div class="google-forms-filter-field">
-                                <label class="form-label" for="google-forms-communication-method">Communication method</label>
-                                <select class="form-select" id="google-forms-communication-method">
-                                    <option value="">All methods</option>
-                                    <option value="text-message">Text message</option>
-                                    <option value="email">Email</option>
-                                    <option value="in-person">In-person</option>
-                                </select>
-                            </div>
-
-                            <div class="google-forms-filter-field">
-                                <label class="form-label" for="google-forms-frequency">Frequency</label>
-                                <input class="form-control" id="google-forms-frequency" type="number" min="0" step="1" placeholder="Enter amount" />
-                            </div>
-                        </div>
-
-                        <div class="google-forms-filter-actions d-flex flex-wrap gap-2">
-                            <button type="button" class="btn btn-primary" data-filter-close>Apply filter</button>
-                            <button type="button" class="btn btn-outline-secondary" data-filter-clear>Clear</button>
-                            <button type="button" class="btn btn-outline-secondary" data-filter-close>Cancel</button>
-                        </div>
-                    </section>
+                    <partial name="Filters/_GoogleFormsFilter" model="source" />
                 }
 
-                @if (canEdit && source.Id == "cognito")
+                @if (Model.CanEdit && source.FilterKind == DashboardFilterKind.Cognito)
                 {
-                    <section class="dashboard-filter-panel cognito-filter-panel" id="cognito-filter-panel" aria-labelledby="cognito-filter-title" hidden>
-                        <h2 class="google-forms-filter-title" id="cognito-filter-title">Filter Cognito data by</h2>
-
-                        <div class="cognito-filter-fields">
-                            <div class="google-forms-filter-field cognito-county-field">
-                                <label class="form-label" for="cognito-county">County</label>
-                                <select class="form-select" id="cognito-county" data-cognito-county>
-                                    <option value="">Select county</option>
-                                    @foreach (var county in floridaCounties)
-                                    {
-                                        <option value="@county">@county County</option>
-                                    }
-                                </select>
-                            </div>
-
-                            <div class="google-forms-filter-field cognito-school-field" id="cognito-school-field" data-cognito-school-field hidden>
-                                <label class="form-label" for="cognito-school">School</label>
-                                <select class="form-select" id="cognito-school">
-                                    <option value="">Schools in county</option>
-                                    <option value="school-placeholder-1">High school placeholder 1</option>
-                                    <option value="school-placeholder-2">High school placeholder 2</option>
-                                    <option value="school-placeholder-3">High school placeholder 3</option>
-                                    <option value="school-placeholder-4">High school placeholder 4</option>
-                                    <option value="school-placeholder-5">High school placeholder 5</option>
-                                </select>
-                                <small class="form-text">Placeholder school options will be replaced with the selected county's high schools.</small>
-                            </div>
-
-                            <div class="google-forms-filter-field cognito-major-field">
-                                <label class="form-label" for="cognito-major">Intended major</label>
-                                <select class="form-select" id="cognito-major">
-                                    <option value="">Select major</option>
-                                    <option>Accounting</option>
-                                    <option>Biology</option>
-                                    <option>Business</option>
-                                    <option>Computer Science</option>
-                                    <option>Education</option>
-                                    <option>Engineering</option>
-                                    <option>Health Sciences</option>
-                                    <option>Nursing</option>
-                                    <option>Psychology</option>
-                                    <option>Undecided</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="google-forms-filter-actions d-flex flex-wrap gap-2">
-                            <button type="button" class="btn btn-primary" data-filter-close>Apply filter</button>
-                            <button type="button" class="btn btn-outline-secondary" data-cognito-filter-clear>Clear</button>
-                            <button type="button" class="btn btn-outline-secondary" data-filter-close>Cancel</button>
-                        </div>
-                    </section>
+                    <partial name="Filters/_CognitoFilter" model="source" />
                 }
 
-                <section class="dashboard-summary-panel" id="@source.Id-summary-panel" aria-labelledby="@source.Id-summary-title" hidden>
-                    <h2 class="dashboard-summary-title" id="@source.Id-summary-title">Summarized data for @source.Name:</h2>
-                    <p class="dashboard-summary-text">
-                        This sample summary highlights the overall activity in the @source.Name data. The available information suggests steady participation, with changes in engagement across the reporting period.
-                    </p>
-                    <h3 class="dashboard-summary-trends-title">Trends to consider</h3>
-                    <ul class="dashboard-summary-trends">
-                        <li>Participation may vary over time; compare activity across reporting periods.</li>
-                        <li>Some groups may show higher engagement than others.</li>
-                        <li>Review these sample trends alongside the underlying data before drawing conclusions.</li>
-                    </ul>
-                    <div class="dashboard-summary-actions">
-                        <button type="button" class="btn btn-outline-secondary" data-summary-close>
-                            <svg class="dashboard-summary-exit-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
-                                <path d="M3 3l10 10M13 3L3 13" />
-                            </svg>
-                            Exit
-                        </button>
-                    </div>
-                </section>
+                <partial name="_DashboardSummary" model="source" />
             </div>
         }
     </div>

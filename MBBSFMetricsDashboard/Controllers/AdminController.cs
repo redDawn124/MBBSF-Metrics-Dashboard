@@ -38,7 +38,7 @@ public class AdminController(AccountService accounts) : Controller
     }
 
     [HttpGet]
-    public IActionResult Dashboard() => View();
+    public IActionResult Dashboard() => View(DashboardViewModelFactory.Create(canEdit: true));
 
     [HttpPost]
     [ValidateAntiForgeryToken]

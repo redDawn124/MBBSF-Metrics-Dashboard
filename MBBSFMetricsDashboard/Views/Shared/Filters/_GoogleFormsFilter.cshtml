@@ -1,0 +1,40 @@
+@model MetricSourceViewModel
+
+<section class="dashboard-filter-panel google-forms-filter-panel" id="@Model.Id-filter-panel" aria-labelledby="@Model.Id-filter-title" hidden>
+    <h2 class="google-forms-filter-title" id="@Model.Id-filter-title">Filter Google Forms data by</h2>
+
+    <div class="google-forms-filter-fields">
+        <div class="google-forms-filter-field">
+            <label class="form-label" for="google-forms-mentor">Mentor</label>
+            <select class="form-select" id="google-forms-mentor" name="Mentor">
+                <option value="">All mentors</option>
+                @foreach (var mentor in Model.MentorOptions)
+                {
+                    <option value="@mentor">@mentor</option>
+                }
+            </select>
+        </div>
+
+        <div class="google-forms-filter-field">
+            <label class="form-label" for="google-forms-communication-method">Communication method</label>
+            <select class="form-select" id="google-forms-communication-method" name="CommunicationMethod">
+                <option value="">All methods</option>
+                @foreach (var method in Model.CommunicationMethodOptions)
+                {
+                    <option value="@method.Value">@method.Text</option>
+                }
+            </select>
+        </div>
+
+        <div class="google-forms-filter-field">
+            <label class="form-label" for="google-forms-frequency">Frequency</label>
+            <input class="form-control" id="google-forms-frequency" name="Frequency" type="number" min="0" step="1" placeholder="Enter amount" />
+        </div>
+    </div>
+
+    <div class="google-forms-filter-actions d-flex flex-wrap gap-2">
+        <button type="button" class="btn btn-primary" data-filter-close>Apply filter</button>
+        <button type="button" class="btn btn-outline-secondary" data-filter-clear>Clear</button>
+        <button type="button" class="btn btn-outline-secondary" data-filter-close>Cancel</button>
+    </div>
+</section>
