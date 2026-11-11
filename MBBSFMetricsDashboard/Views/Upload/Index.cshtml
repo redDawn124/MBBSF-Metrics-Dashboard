@@ -1,0 +1,407 @@
+﻿@{
+    ViewData["Title"] = "Upload Data";
+}
+
+<style>
+    .upload-page {
+        background: #f7f7f5;
+        min-height: 85vh;
+        padding: 35px 20px;
+        color: #111;
+    }
+
+    .upload-container {
+        max-width: 1125px;
+        margin: 0 auto;
+    }
+
+    .upload-welcome {
+        text-align: center;
+        font-size: 25px;
+        margin-bottom: 35px;
+    }
+
+    .upload-panel {
+        background: white;
+        border: 1px solid #333;
+    }
+
+    .upload-tabs {
+        display: flex;
+        border-bottom: 1px solid #333;
+        flex-wrap: wrap;
+    }
+
+    .upload-tab {
+        border: none;
+        border-right: 1px solid #333;
+        background: #e7e7e2;
+        padding: 17px 30px;
+        cursor: pointer;
+        min-width: 165px;
+    }
+
+    .upload-tab.active {
+        background: white;
+        font-weight: 600;
+    }
+
+    .upload-tab:hover {
+        background: #f1f1ed;
+    }
+
+    .upload-content {
+        padding: 40px 5%;
+    }
+
+    .upload-heading-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        flex-wrap: wrap;
+    }
+
+    .upload-heading-row h2 {
+        font-size: 23px;
+        margin-bottom: 8px;
+    }
+
+    .upload-search {
+        display: block;
+        width: 350px;
+        max-width: 100%;
+        margin: 25px 0 12px auto;
+        padding: 10px;
+        border: none;
+        border-bottom: 1px solid #333;
+        outline-offset: 2px;
+    }
+
+    .upload-file-list {
+        border: 1px solid #aaa;
+        min-height: 300px;
+    }
+
+    .upload-file-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 13px 15px;
+        border-bottom: 1px solid #bbb;
+    }
+
+    .upload-file-row:last-child {
+        border-bottom: none;
+    }
+
+    .upload-file-row input {
+        width: 19px;
+        height: 19px;
+        margin-left: auto;
+        flex-shrink: 0;
+    }
+
+    .upload-file-icon {
+        border: 1px solid #999;
+        padding: 5px 8px;
+        font-size: 18px;
+    }
+
+    .upload-file-name {
+        font-weight: 500;
+    }
+
+    .upload-file-type {
+        color: #666;
+        font-size: 12px;
+        margin-top: 3px;
+    }
+
+    .upload-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        margin-top: 35px;
+    }
+
+    .upload-submit {
+        background: #e5e5e1;
+        color: #111;
+        border: 1px solid #999;
+        padding: 10px 18px;
+    }
+
+    .upload-submit:hover {
+        background: #d5d5d0;
+    }
+
+    .upload-status {
+        margin-bottom: 20px;
+    }
+
+    @@media (max-width: 600px) {
+        .upload-tab {
+            flex: 1;
+            min-width: 100px;
+            padding: 13px 8px;
+        }
+
+        .upload-content {
+            padding: 25px 18px;
+        }
+
+        .upload-welcome {
+            font-size: 21px;
+        }
+    }
+</style>
+
+<div class="upload-page">
+    <div class="upload-container">
+
+        <h1 class="upload-welcome">
+            Welcome to the <strong>MBBSF</strong> Data Upload
+        </h1>
+
+        <div class="upload-panel">
+
+            <div class="upload-tabs" role="tablist"
+                 aria-label="Upload data source">
+                <button type="button"
+                        class="upload-tab active"
+                        data-source="Coursera">
+                    ▣ &nbsp; Coursera
+                </button>
+
+                <button type="button"
+                        class="upload-tab"
+                        data-source="Cognito">
+                    ☁ &nbsp; Cognito
+                </button>
+
+                <button type="button"
+                        class="upload-tab"
+                        data-source="GoogleForms">
+                    ▤ &nbsp; Google Forms
+                </button>
+            </div>
+
+            <div class="upload-content">
+
+                @if (TempData["CourseraUpload"] != null)
+                {
+                    <div class="alert alert-success upload-status">
+                        Coursera: @TempData["CourseraUpload"]
+                    </div>
+                }
+
+                @if (TempData["Google FormsUpload"] != null)
+                {
+                    <div class="alert alert-success upload-status">
+                        Google Forms: @TempData["Google FormsUpload"]
+                    </div>
+                }
+
+                @if (TempData["CognitoUpload"] != null)
+                {
+                    <div class="alert alert-success upload-status">
+                        Cognito: @TempData["CognitoUpload"]
+                    </div>
+                }
+
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="alert alert-danger upload-status">
+                        <div asp-validation-summary="All"></div>
+                    </div>
+                }
+
+                <form asp-controller="Upload" asp-action="Index"
+                      method="post" enctype="multipart/form-data">
+                    @Html.AntiForgeryToken()
+
+                    <div class="upload-heading-row">
+                        <div>
+                            <h2 id="source-heading">Coursera Upload</h2>
+                            <p id="source-instructions">Pick a CSV file to upload</p>
+                        </div>
+
+                        <a asp-controller="Admin"
+                           asp-action="Dashboard"
+                           class="btn btn-outline-dark">
+                            ← Back
+                        </a>
+                    </div>
+
+                    <input type="search"
+                           id="file-search"
+                           class="upload-search"
+                           placeholder="⌕  Search"
+                           aria-label="Search files" />
+
+                    <div class="upload-file-list">
+
+                        <label class="upload-file-row"
+                               data-file-row="Coursera">
+                            <span class="upload-file-icon">▤</span>
+                            <span>
+                                <span class="upload-file-name">
+                                    Select a Coursera file
+                                </span>
+                                <span class="upload-file-type">
+                                    CSV file · Maximum 5 MB
+                                </span>
+                            </span>
+                            <input type="file"
+                                   name="CourseraFile"
+                                   accept=".csv"
+                                   aria-label="Choose Coursera CSV file" />
+                        </label>
+
+                        <label class="upload-file-row"
+                               data-file-row="GoogleForms">
+                            <span class="upload-file-icon">▤</span>
+                            <span>
+                                <span class="upload-file-name">
+                                    Select a Google Forms file
+                                </span>
+                                <span class="upload-file-type">
+                                    CSV file · Maximum 5 MB
+                                </span>
+                            </span>
+                            <input type="file"
+                                   name="GoogleFormsFile"
+                                   accept=".csv"
+                                   aria-label="Choose Google Forms CSV file" />
+                        </label>
+
+                        <label class="upload-file-row"
+                               data-file-row="Cognito">
+                            <span class="upload-file-icon">▤</span>
+                            <span>
+                                <span class="upload-file-name">
+                                    Select a Cognito file
+                                </span>
+                                <span class="upload-file-type">
+                                    PDF file · Maximum 5 MB
+                                </span>
+                            </span>
+                            <input type="file"
+                                   name="CognitoFile"
+                                   accept=".pdf"
+                                   aria-label="Choose Cognito PDF file" />
+                        </label>
+
+                        <div id="no-files-message"
+                             class="p-3 text-muted"
+                             hidden>
+                            No matching files.
+                        </div>
+                    </div>
+
+                    <div class="upload-actions">
+                        <button type="submit" class="upload-submit">
+                            Upload File
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const tabs = document.querySelectorAll(".upload-tab");
+    const heading = document.getElementById("source-heading");
+    const instructions = document.getElementById("source-instructions");
+    const search = document.getElementById("file-search");
+    const rows = document.querySelectorAll("[data-file-row]");
+    const noFilesMessage = document.getElementById("no-files-message");
+
+    const sourceNames = {
+        Coursera: "Coursera",
+        Cognito: "Cognito",
+        GoogleForms: "Google Forms"
+    };
+
+    const sourceTypes = {
+        Coursera: "CSV",
+        Cognito: "PDF",
+        GoogleForms: "CSV"
+    };
+
+    let activeSource = "Coursera";
+
+    function updateFileList() {
+        let visibleCount = 0;
+        const searchText = search.value.toLowerCase();
+
+        rows.forEach(row => {
+            const input = row.querySelector('input[type="file"]');
+            const selectedFile = input.files.length > 0
+                ? input.files[0].name
+                : "";
+
+            const matchesSource =
+                row.dataset.fileRow === activeSource;
+
+            const rowText = row.innerText + " " + selectedFile;
+            const matchesSearch =
+                rowText.toLowerCase().includes(searchText);
+
+            const visible = matchesSource && matchesSearch;
+            row.hidden = !visible;
+
+            if (visible) {
+                visibleCount++;
+            }
+        });
+
+        noFilesMessage.hidden = visibleCount !== 0;
+    }
+
+    tabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+            activeSource = tab.dataset.source;
+
+            tabs.forEach(item => {
+                item.classList.toggle("active", item === tab);
+            });
+
+            heading.textContent =
+                sourceNames[activeSource] + " Upload";
+
+            instructions.textContent =
+                "Pick a " + sourceTypes[activeSource] +
+                " file to upload";
+
+            search.value = "";
+            updateFileList();
+        });
+    });
+
+    search.addEventListener("input", updateFileList);
+
+    document.querySelectorAll('input[type="file"]').forEach(input => {
+        input.addEventListener("change", () => {
+            const row = input.closest("[data-file-row]");
+            const name = row.querySelector(".upload-file-name");
+
+            if (input.files.length > 0) {
+                name.textContent = input.files[0].name;
+            } else {
+                name.textContent =
+                    "Select a " +
+                    sourceNames[row.dataset.fileRow] +
+                    " file";
+            }
+
+            updateFileList();
+        });
+    });
+
+    updateFileList();
+</script>
+
+ 

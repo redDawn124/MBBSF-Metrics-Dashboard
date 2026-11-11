@@ -13,6 +13,8 @@
     <div class="d-flex flex-wrap gap-2">
         <a asp-controller="Account" asp-action="Index" class="btn btn-outline-secondary">Manage Accounts</a>
         <a asp-controller="Account" asp-action="ChangePassword" class="btn btn-outline-secondary">Change Password</a>
+        <a asp-controller="Upload" asp-action="Index" class="btn btn-outline-primary">Upload Data</a>
+
         <form asp-controller="Admin" asp-action="Logout" method="post">
             @Html.AntiForgeryToken()
             <button type="submit" class="btn btn-outline-secondary">Logout</button>
