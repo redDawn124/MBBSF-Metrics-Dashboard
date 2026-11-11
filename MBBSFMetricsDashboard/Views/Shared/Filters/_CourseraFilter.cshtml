@@ -1,0 +1,24 @@
+@model MetricSourceViewModel
+
+<section class="dashboard-filter-panel coursera-filter-panel" id="@Model.Id-filter-panel" aria-labelledby="@Model.Id-filter-title" hidden>
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-4">
+        <h2 class="coursera-filter-title mb-0" id="@Model.Id-filter-title">Filter Coursera Data By:</h2>
+        <span class="coursera-filter-badge">Illustrative selections</span>
+    </div>
+
+    <fieldset class="coursera-filter-options">
+        <legend class="visually-hidden">Choose how to filter Coursera data</legend>
+        @foreach (var option in Model.CourseraSortOptions)
+        {
+            <label class="form-check">
+                <input class="form-check-input" type="radio" name="coursera-filter" value="@option.Value" checked="@(option.IsDefault ? "checked" : null)" />
+                <span class="form-check-label">@option.Text</span>
+            </label>
+        }
+    </fieldset>
+
+    <div class="coursera-filter-actions d-flex flex-wrap gap-2">
+        <button type="button" class="btn btn-primary" data-filter-close>Apply Filter</button>
+        <button type="button" class="btn btn-outline-secondary" data-filter-close>Cancel</button>
+    </div>
+</section>

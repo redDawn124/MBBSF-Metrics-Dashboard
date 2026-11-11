@@ -1,0 +1,21 @@
+@model MetricSourceViewModel
+
+<section class="dashboard-summary-panel" id="@Model.Id-summary-panel" aria-labelledby="@Model.Id-summary-title" hidden>
+    <h2 class="dashboard-summary-title" id="@Model.Id-summary-title">Summarized data for @Model.Name:</h2>
+    <p class="dashboard-summary-text">@Model.SummaryText</p>
+    <h3 class="dashboard-summary-trends-title">Trends to consider</h3>
+    <ul class="dashboard-summary-trends">
+        @foreach (var trend in Model.SummaryTrends)
+        {
+            <li>@trend</li>
+        }
+    </ul>
+    <div class="dashboard-summary-actions">
+        <button type="button" class="btn btn-outline-secondary" data-summary-close>
+            <svg class="dashboard-summary-exit-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                <path d="M3 3l10 10M13 3L3 13" />
+            </svg>
+            Exit
+        </button>
+    </div>
+</section>

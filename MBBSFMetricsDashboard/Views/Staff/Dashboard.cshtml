@@ -1,6 +1,7 @@
+@model DashboardViewModel
+
 @{
     ViewData["Title"] = "Board Member Dashboard";
-    ViewData["CanEdit"] = false;
 }
 
 <div class="d-flex flex-wrap justify-content-between align-items-end gap-2 mb-3">
@@ -20,7 +21,7 @@
     </div>
 </div>
 
-<partial name="_MetricsTabs" />
+<partial name="_MetricsTabs" model="Model" />
 
 @section Scripts {
     <script src="~/lib/chartjs/chart.umd.min.js"></script>
