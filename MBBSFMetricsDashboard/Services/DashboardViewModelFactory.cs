@@ -21,10 +21,11 @@ public static class DashboardViewModelFactory
         "Health Sciences", "Nursing", "Psychology", "Undecided"
     ];
 
-    private static readonly IReadOnlyList<string> SchoolPlaceholders =
+    private static readonly IReadOnlyList<string> CognitoSchools =
     [
-        "High school placeholder 1", "High school placeholder 2", "High school placeholder 3",
-        "High school placeholder 4", "High school placeholder 5"
+        "Miami Senior High School", "Coral Gables Senior High School", "Dillard High School",
+        "William T. Dwyer High School", "Edgewater High School", "Plant High School",
+        "Seminole High School", "Buchholz High School"
     ];
 
     private static readonly IReadOnlyList<string> SummaryTrends =
@@ -173,10 +174,45 @@ public static class DashboardViewModelFactory
             Id = "cognito",
             FilterKind = DashboardFilterKind.Cognito,
             FloridaCountyOptions = FloridaCounties,
-            SchoolOptions = SchoolPlaceholders,
+            SchoolOptions = CognitoSchools,
             MajorOptions = Majors,
             SummaryText = "This sample summary highlights the overall activity in the Cognito data. The available information suggests steady participation, with changes in engagement across the reporting period.",
-            SummaryTrends = SummaryTrends
+            SummaryTrends = SummaryTrends,
+            Table = new DashboardTableViewModel
+            {
+                Columns = ["Applicant Name", "School Location", "Personal Location", "Major of Choice"],
+                Rows = Rows(
+                    ["Aaliyah Brooks", "Miami Senior High School, Miami", "Miami-Dade", "Biology"],
+                    ["Daniel Ortega", "Coral Gables Senior High School, Coral Gables", "Miami-Dade", "Engineering"],
+                    ["Maya Thompson", "Dillard High School, Fort Lauderdale", "Broward", "Nursing"],
+                    ["Elijah Grant", "William T. Dwyer High School, Palm Beach Gardens", "Palm Beach", "Business"],
+                    ["Sofia Ramirez", "Edgewater High School, Orlando", "Orange", "Psychology"],
+                    ["Noah Bennett", "Plant High School, Tampa", "Hillsborough", "Computer Science"],
+                    ["Layla Hassan", "Seminole High School, Sanford", "Seminole", "Biology"],
+                    ["Caleb Foster", "Buchholz High School, Gainesville", "Alachua", "Undecided"])
+            },
+            Charts =
+            [
+                new DashboardChartViewModel
+                {
+                    Id = "cognito-major-chart",
+                    Title = "Applicants by Major of Choice",
+                    Type = "bar",
+                    Labels =
+                    [
+                        "Biology", "Business", "Computer Science", "Engineering",
+                        "Nursing", "Psychology", "Undecided"
+                    ],
+                    Series =
+                    [
+                        new DashboardSeriesViewModel
+                        {
+                            Label = "Applicants",
+                            Values = [2m, 1m, 1m, 1m, 1m, 1m, 1m]
+                        }
+                    ]
+                }
+            ]
         };
     }
 }

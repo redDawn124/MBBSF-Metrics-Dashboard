@@ -18,7 +18,13 @@
             foreach (var chart in Model.Charts)
             {
                 <figure class="metrics-chart-card" id="@chart.Id">
-                    <figcaption class="metrics-chart-title">@chart.Title</figcaption>
+                    <figcaption class="metrics-chart-title">
+                        <span>@chart.Title</span>
+                        <button type="button" class="metrics-chart-expand" data-chart-expand
+                                aria-label="Expand @chart.Title">
+                            Expand
+                        </button>
+                    </figcaption>
                     <div class="metrics-chart">
                         <canvas data-chart-data="@JsonSerializer.Serialize(chart, jsonOptions)"></canvas>
                     </div>

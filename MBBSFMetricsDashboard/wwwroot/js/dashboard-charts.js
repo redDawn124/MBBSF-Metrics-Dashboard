@@ -2,12 +2,14 @@
     "use strict";
 
     var chartInstances = new WeakMap();
+    var expandedChart = null;
+    var expandedData = null;
     var palette = [
         "#0d6efd", "#6610f2", "#d63384", "#fd7e14",
         "#198754", "#20c997", "#6c757d", "#ffc107"
     ];
 
-    function buildConfig(data) {
+    function buildConfig(data, expanded) {
         var labels = data.subLabels && data.subLabels.length
             ? data.labels.map(function (label, index) {
                 return [label, data.subLabels[index] || ""];
@@ -52,6 +54,10 @@
             yAxis.max = data.maxValue;
         }
 
+        var xAxis = expanded
+            ? { ticks: { autoSkip: false, maxRotation: 45, minRotation: 0 } }
+            : { ticks: { autoSkip: true, maxRotation: 0, minRotation: 0 } };
+
         return {
             type: "bar",
             data: {
@@ -61,7 +67,7 @@
                     data: values,
                     backgroundColor: "#0d6efd",
                     borderRadius: 4,
-                    maxBarThickness: 48
+                    maxBarThickness: expanded ? 72 : 48
                 }]
             },
             options: {
@@ -71,17 +77,25 @@
                     legend: { display: false }
                 },
                 scales: {
-                    x: {
-                        ticks: {
-                            autoSkip: true,
-                            maxRotation: 0,
-                            minRotation: 0
-                        }
-                    },
+                    x: xAxis,
                     y: yAxis
                 }
             }
         };
+    }
+
+    function readChartData(canvas) {
+        var raw = canvas.dataset.chartData;
+        if (!raw) {
+            return null;
+        }
+
+        try {
+            return JSON.parse(raw);
+        } catch (error) {
+            console.error("Invalid chart data.", canvas, error);
+            return null;
+        }
     }
 
     function renderChart(canvas) {
@@ -89,20 +103,12 @@
             return;
         }
 
-        var raw = canvas.dataset.chartData;
-        if (!raw) {
+        var data = readChartData(canvas);
+        if (!data) {
             return;
         }
 
-        var data;
-        try {
-            data = JSON.parse(raw);
-        } catch (error) {
-            console.error("Invalid chart data.", canvas, error);
-            return;
-        }
-
-        chartInstances.set(canvas, new Chart(canvas, buildConfig(data)));
+        chartInstances.set(canvas, new Chart(canvas, buildConfig(data, false)));
     }
 
     function renderChartsIn(pane) {
@@ -126,6 +132,38 @@
         });
     }
 
+    function renderExpandedChart() {
+        var canvas = document.getElementById("chartExpandModalCanvas");
+        if (!canvas || !expandedData || typeof Chart === "undefined") {
+            return;
+        }
+
+        if (expandedChart) {
+            expandedChart.destroy();
+            expandedChart = null;
+        }
+
+        expandedChart = new Chart(canvas, buildConfig(expandedData, true));
+    }
+
+    function openExpandedChart(button) {
+        var card = button.closest(".metrics-chart-card");
+        var canvas = card && card.querySelector("canvas[data-chart-data]");
+        var data = canvas && readChartData(canvas);
+        var modal = document.getElementById("chartExpandModal");
+        if (!data || !modal || !window.bootstrap) {
+            return;
+        }
+
+        expandedData = data;
+        var title = modal.querySelector(".modal-title");
+        if (title) {
+            title.textContent = data.title || "Chart";
+        }
+
+        window.bootstrap.Modal.getOrCreateInstance(modal).show();
+    }
+
     function paneFor(tab) {
         var selector = tab.getAttribute("data-bs-target");
         return selector ? document.querySelector(selector) : null;
@@ -143,6 +181,25 @@
                 resizeChartsIn(pane);
             });
         });
+
+        document.addEventListener("click", function (event) {
+            var button = event.target.closest("[data-chart-expand]");
+            if (button) {
+                openExpandedChart(button);
+            }
+        });
+
+        var modal = document.getElementById("chartExpandModal");
+        if (modal) {
+            modal.addEventListener("shown.bs.modal", renderExpandedChart);
+            modal.addEventListener("hidden.bs.modal", function () {
+                if (expandedChart) {
+                    expandedChart.destroy();
+                    expandedChart = null;
+                }
+                expandedData = null;
+            });
+        }
     });
 
     // Allows the filtering code to re-render charts after replacing pane content.

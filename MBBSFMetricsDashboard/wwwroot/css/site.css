@@ -165,10 +165,34 @@ body {
 }
 
 .metrics-chart-title {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.75rem;
   margin-bottom: 0.5rem;
   color: var(--bs-secondary-color);
   font-size: 0.8125rem;
   font-weight: 600;
+}
+
+.metrics-chart-expand {
+  flex: 0 0 auto;
+  padding: 0;
+  color: var(--bs-primary);
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 0;
+  background: none;
+}
+
+.metrics-chart-expand:hover,
+.metrics-chart-expand:focus-visible {
+  text-decoration: underline;
+}
+
+.metrics-chart-expanded {
+  position: relative;
+  height: min(70vh, 42rem);
 }
 
 .metrics-chart {
