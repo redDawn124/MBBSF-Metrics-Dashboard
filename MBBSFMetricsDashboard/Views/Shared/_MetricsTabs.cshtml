@@ -44,20 +44,10 @@
 
                     <div class="row g-3">
                         <div class="col-lg-7">
-                            <section class="metrics-panel h-100">
-                                <h2 class="metrics-panel-title">Data</h2>
-                                <div class="metrics-table-shell" aria-label="@source.Name data table">
-                                    <p class="text-body-secondary small mb-0">No data uploaded yet.</p>
-                                </div>
-                            </section>
+                            <partial name="_MetricTable" model="source" />
                         </div>
                         <div class="col-lg-5">
-                            <section class="metrics-panel h-100">
-                                <h2 class="metrics-panel-title">Visual data</h2>
-                                <div class="metrics-visual-shell" aria-label="@source.Name visual data">
-                                    <p class="text-body-secondary small mb-0">Visualization will appear here.</p>
-                                </div>
-                            </section>
+                            <partial name="_MetricChart" model="source" />
                         </div>
                     </div>
 

@@ -34,6 +34,8 @@ public static class DashboardViewModelFactory
         "Review these sample trends alongside the underlying data before drawing conclusions."
     ];
 
+    private static IReadOnlyList<IReadOnlyList<string>> Rows(params string[][] rows) => rows;
+
     public static DashboardViewModel Create(bool canEdit)
     {
         return new DashboardViewModel
@@ -41,50 +43,140 @@ public static class DashboardViewModelFactory
             CanEdit = canEdit,
             Sources =
             [
-                new MetricSourceViewModel
+                CreateCourseraSource(),
+                CreateGoogleFormsSource(),
+                CreateCognitoSource()
+            ]
+        };
+    }
+
+    private static MetricSourceViewModel CreateCourseraSource()
+    {
+        return new MetricSourceViewModel
+        {
+            Name = "Coursera",
+            Id = "coursera",
+            FilterKind = DashboardFilterKind.Coursera,
+            CourseraSortOptions =
+            [
+                new() { Value = "student-name-ascending", Text = "Student Name (A–Z)", IsDefault = true },
+                new() { Value = "course-name-ascending", Text = "Course Name (A–Z)" },
+                new() { Value = "total-hours-ascending", Text = "Total Hours (Ascending)" },
+                new() { Value = "total-hours-descending", Text = "Total Hours (Descending)" },
+                new() { Value = "completion-ascending", Text = "Completion % (Ascending)" },
+                new() { Value = "completion-descending", Text = "Completion % (Descending)" }
+            ],
+            SummaryText = "This sample summary highlights the overall activity in the Coursera data. The available information suggests steady participation, with changes in engagement across the reporting period.",
+            SummaryTrends = SummaryTrends,
+            Table = new DashboardTableViewModel
+            {
+                Columns = ["Student Name", "Course Name/ID", "Hours Spent", "Completion %"],
+                Rows = Rows(
+                    ["Alice Johnson", "CS101", "12.5", "85%"],
+                    ["Alice Johnson", "CS205", "8", "72%"],
+                    ["Marcus Lee", "BIO110", "15", "95%"],
+                    ["Priya Patel", "MATH201", "10.5", "60%"],
+                    ["Diego Ramirez", "ENG101", "6.5", "40%"],
+                    ["Sofia Chen", "CS101", "14", "88%"],
+                    ["Jamal Wright", "NUR120", "9", "75%"],
+                    ["Hannah Kim", "PSY101", "11", "100%"])
+            },
+            Charts =
+            [
+                new DashboardChartViewModel
                 {
-                    Name = "Coursera",
-                    Id = "coursera",
-                    FilterKind = DashboardFilterKind.Coursera,
-                    CourseraSortOptions =
+                    Id = "coursera-completion-chart",
+                    Title = "Completion Percentage by Student and Course",
+                    Type = "bar",
+                    Labels =
                     [
-                        new() { Value = "student-name-ascending", Text = "Student Name (A–Z)", IsDefault = true },
-                        new() { Value = "course-name-ascending", Text = "Course Name (A–Z)" },
-                        new() { Value = "total-hours-ascending", Text = "Total Hours (Ascending)" },
-                        new() { Value = "total-hours-descending", Text = "Total Hours (Descending)" },
-                        new() { Value = "completion-ascending", Text = "Completion % (Ascending)" },
-                        new() { Value = "completion-descending", Text = "Completion % (Descending)" }
+                        "Alice Johnson", "Alice Johnson", "Marcus Lee", "Priya Patel",
+                        "Diego Ramirez", "Sofia Chen", "Jamal Wright", "Hannah Kim"
                     ],
-                    SummaryText = "This sample summary highlights the overall activity in the Coursera data. The available information suggests steady participation, with changes in engagement across the reporting period.",
-                    SummaryTrends = SummaryTrends
-                },
-                new MetricSourceViewModel
-                {
-                    Name = "Google Forms",
-                    Id = "google-forms",
-                    FilterKind = DashboardFilterKind.GoogleForms,
-                    MentorOptions = ["Mentor 1", "Mentor 2", "Mentor 3", "Mentor 4", "Mentor 5"],
-                    CommunicationMethodOptions =
+                    SubLabels =
                     [
-                        new() { Value = "text-message", Text = "Text message" },
-                        new() { Value = "email", Text = "Email" },
-                        new() { Value = "in-person", Text = "In-person" }
+                        "CS101", "CS205", "BIO110", "MATH201",
+                        "ENG101", "CS101", "NUR120", "PSY101"
                     ],
-                    SummaryText = "This sample summary highlights the overall activity in the Google Forms data. The available information suggests steady participation, with changes in engagement across the reporting period.",
-                    SummaryTrends = SummaryTrends
-                },
-                new MetricSourceViewModel
-                {
-                    Name = "Cognito",
-                    Id = "cognito",
-                    FilterKind = DashboardFilterKind.Cognito,
-                    FloridaCountyOptions = FloridaCounties,
-                    SchoolOptions = SchoolPlaceholders,
-                    MajorOptions = Majors,
-                    SummaryText = "This sample summary highlights the overall activity in the Cognito data. The available information suggests steady participation, with changes in engagement across the reporting period.",
-                    SummaryTrends = SummaryTrends
+                    MaxValue = 100m,
+                    Series =
+                    [
+                        new DashboardSeriesViewModel
+                        {
+                            Label = "Completion %",
+                            Values = [85m, 72m, 95m, 60m, 40m, 88m, 75m, 100m]
+                        }
+                    ]
                 }
             ]
+        };
+    }
+
+    private static MetricSourceViewModel CreateGoogleFormsSource()
+    {
+        return new MetricSourceViewModel
+        {
+            Name = "Google Forms",
+            Id = "google-forms",
+            FilterKind = DashboardFilterKind.GoogleForms,
+            MentorOptions = ["Mentor 1", "Mentor 2", "Mentor 3", "Mentor 4", "Mentor 5"],
+            CommunicationMethodOptions =
+            [
+                new() { Value = "text-message", Text = "Text message" },
+                new() { Value = "email", Text = "Email" },
+                new() { Value = "in-person", Text = "In-person" }
+            ],
+            SummaryText = "This sample summary highlights the overall activity in the Google Forms data. The available information suggests steady participation, with changes in engagement across the reporting period.",
+            SummaryTrends = SummaryTrends,
+            Table = new DashboardTableViewModel
+            {
+                Columns = ["Mentee Name", "Mentor Name", "Communication Method", "Additional Notes"],
+                TruncateColumnIndex = 3,
+                Rows = Rows(
+                    ["Alex Turner", "Mentor 1", "Text message", "Prefers weekly check-ins."],
+                    ["Alex Turner", "Mentor 1", "Email", "Requested scholarship resources."],
+                    ["Alex Turner", "Mentor 1", "In-person", "Met at the fall kickoff event."],
+                    ["Bianca Ruiz", "Mentor 2", "Text message", "Needs help with the FAFSA deadline."],
+                    ["Bianca Ruiz", "Mentor 2", "Email", "Shared the college application checklist."],
+                    ["Carlos Mendez", "Mentor 1", "In-person", "Interested in engineering programs and asked about internship opportunities, campus visits, and scholarship deadlines for the upcoming academic year."],
+                    ["Carlos Mendez", "Mentor 1", "Text message", "Confirmed the upcoming campus visit."],
+                    ["Dana Whitfield", "Mentor 3", "Email", "Discussing dual enrollment options."],
+                    ["Eli Brooks", "Mentor 2", "Text message", "Check-in about course selection."],
+                    ["Fatima Noor", "Mentor 3", "In-person", "Reviewed graduation requirements."])
+            },
+            Charts =
+            [
+                new DashboardChartViewModel
+                {
+                    Id = "google-forms-communication-chart",
+                    Title = "Communication Methods Used",
+                    Type = "pie",
+                    Labels = ["Text message", "Email", "In-person"],
+                    Series =
+                    [
+                        new DashboardSeriesViewModel
+                        {
+                            Label = "Total",
+                            Values = [4m, 3m, 3m]
+                        }
+                    ]
+                }
+            ]
+        };
+    }
+
+    private static MetricSourceViewModel CreateCognitoSource()
+    {
+        return new MetricSourceViewModel
+        {
+            Name = "Cognito",
+            Id = "cognito",
+            FilterKind = DashboardFilterKind.Cognito,
+            FloridaCountyOptions = FloridaCounties,
+            SchoolOptions = SchoolPlaceholders,
+            MajorOptions = Majors,
+            SummaryText = "This sample summary highlights the overall activity in the Cognito data. The available information suggests steady participation, with changes in engagement across the reporting period.",
+            SummaryTrends = SummaryTrends
         };
     }
 }

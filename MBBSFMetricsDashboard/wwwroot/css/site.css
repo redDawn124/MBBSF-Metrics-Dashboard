@@ -55,21 +55,125 @@ body {
 
 .metrics-table-shell,
 .metrics-visual-shell {
-  display: flex;
   flex: 1 1 auto;
-  align-items: center;
-  justify-content: center;
   min-height: 20rem;
   padding: 1rem;
-  text-align: center;
   border: 1px solid var(--bs-border-color);
   border-radius: 0.5rem;
   background-color: #fff;
 }
 
+.metrics-table-shell {
+  overflow: hidden;
+}
+
+.metrics-visual-shell {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.metrics-table-shell.metrics-empty,
+.metrics-visual-shell.metrics-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.metrics-table-scroll {
+  max-height: 32rem;
+  overflow: auto;
+}
+
+.metrics-table-scroll .table {
+  margin-bottom: 0;
+}
+
+.metrics-table-scroll thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: var(--bs-body-bg);
+  white-space: nowrap;
+}
+
+.metrics-table-truncate {
+  max-width: 16rem;
+}
+
+.metrics-table-fixed {
+  table-layout: fixed;
+}
+
+.metrics-table-fixed .metrics-table-truncate {
+  width: 38%;
+}
+
+.metrics-table-fixed thead th {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.metrics-table-fixed td {
+  overflow-wrap: anywhere;
+}
+
+.metrics-table-truncate span {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.metrics-note-toggle {
+  display: block;
+  margin-top: 0.25rem;
+  padding: 0;
+  color: var(--bs-primary);
+  font-size: 0.75rem;
+  line-height: 1.2;
+  border: 0;
+  background: none;
+}
+
+.metrics-note-toggle:hover,
+.metrics-note-toggle:focus-visible {
+  text-decoration: underline;
+}
+
+.metrics-note-row[hidden] {
+  display: none;
+}
+
+.metrics-note-row td {
+  background-color: var(--bs-tertiary-bg);
+}
+
+.metrics-note-text {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.metrics-chart-card {
+  margin: 0;
+}
+
+.metrics-chart-card:not(:first-child) {
+  padding-top: 1rem;
+  border-top: 1px solid var(--bs-border-color);
+}
+
+.metrics-chart-title {
+  margin-bottom: 0.5rem;
+  color: var(--bs-secondary-color);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
 .metrics-chart {
   position: relative;
-  height: 20rem;
+  height: 18rem;
 }
 
 .dashboard-filter-panel {

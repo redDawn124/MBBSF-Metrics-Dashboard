@@ -1,0 +1,29 @@
+@using System.Text.Json
+@model MetricSourceViewModel
+
+@{
+    var jsonOptions = new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
+}
+
+<section class="metrics-panel h-100">
+    <h2 class="metrics-panel-title">Visual data</h2>
+    <div class="metrics-visual-shell@(Model.Charts.Count == 0 ? " metrics-empty" : "")"
+         aria-label="@Model.Name visual data">
+        @if (Model.Charts.Count == 0)
+        {
+            <p class="text-body-secondary small mb-0">Visualization will appear here.</p>
+        }
+        else
+        {
+            foreach (var chart in Model.Charts)
+            {
+                <figure class="metrics-chart-card" id="@chart.Id">
+                    <figcaption class="metrics-chart-title">@chart.Title</figcaption>
+                    <div class="metrics-chart">
+                        <canvas data-chart-data="@JsonSerializer.Serialize(chart, jsonOptions)"></canvas>
+                    </div>
+                </figure>
+            }
+        }
+    </div>
+</section>
