@@ -1,0 +1,69 @@
+@model MetricSourceViewModel
+
+<section class="metrics-panel h-100">
+    <h2 class="metrics-panel-title">Data</h2>
+    <div class="metrics-table-shell@(Model.Table.Rows.Count == 0 ? " metrics-empty" : "")"
+         aria-label="@Model.Name data table">
+        @if (Model.Table.Rows.Count == 0)
+        {
+            <p class="text-body-secondary small mb-0">@Model.EmptyMessage</p>
+        }
+        else
+        {
+            var tableClass = Model.Table.TruncateColumnIndex.HasValue
+                ? "table table-sm table-striped align-middle mb-0 metrics-table-fixed"
+                : "table table-sm table-striped align-middle mb-0";
+            <div class="metrics-table-scroll">
+                <table class="@tableClass">
+                    <thead>
+                        <tr>
+                            @foreach (var column in Model.Table.Columns)
+                            {
+                                <th scope="col">@column</th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (var rowIndex = 0; rowIndex < Model.Table.Rows.Count; rowIndex++)
+                        {
+                            var row = Model.Table.Rows[rowIndex];
+                            var noteId = $"{Model.Id}-note-{rowIndex}";
+                            <tr>
+                                @for (var i = 0; i < Model.Table.Columns.Count; i++)
+                                {
+                                    var value = i < row.Count ? row[i] : string.Empty;
+                                    if (Model.Table.TruncateColumnIndex == i)
+                                    {
+                                        <td class="metrics-table-truncate" title="@value">
+                                            <span>@value</span>
+                                            <button type="button" class="metrics-note-toggle"
+                                                    data-note-toggle aria-controls="@noteId"
+                                                    aria-expanded="false">
+                                                Show note
+                                            </button>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td>@value</td>
+                                    }
+                                }
+                            </tr>
+                            if (Model.Table.TruncateColumnIndex.HasValue)
+                            {
+                                var noteValue = Model.Table.TruncateColumnIndex.Value < row.Count
+                                    ? row[Model.Table.TruncateColumnIndex.Value]
+                                    : string.Empty;
+                                <tr class="metrics-note-row" id="@noteId" hidden>
+                                    <td colspan="@Model.Table.Columns.Count">
+                                        <p class="metrics-note-text mb-0">@noteValue</p>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</section>

@@ -42,22 +42,12 @@
                         </button>
                     </div>
 
-                    <div class="row g-3">
+                    <div class="row g-3 metrics-content-layout">
                         <div class="col-lg-7">
-                            <section class="metrics-panel h-100">
-                                <h2 class="metrics-panel-title">Data</h2>
-                                <div class="metrics-table-shell" aria-label="@source.Name data table">
-                                    <p class="text-body-secondary small mb-0">No data uploaded yet.</p>
-                                </div>
-                            </section>
+                            <partial name="_MetricTable" model="source" />
                         </div>
                         <div class="col-lg-5">
-                            <section class="metrics-panel h-100">
-                                <h2 class="metrics-panel-title">Visual data</h2>
-                                <div class="metrics-visual-shell" aria-label="@source.Name visual data">
-                                    <p class="text-body-secondary small mb-0">Visualization will appear here.</p>
-                                </div>
-                            </section>
+                            <partial name="_MetricChart" model="source" />
                         </div>
                     </div>
 
@@ -82,5 +72,21 @@
                 <partial name="_DashboardSummary" model="source" />
             </div>
         }
+    </div>
+</div>
+
+<div class="modal fade" id="chartExpandModal" tabindex="-1" aria-labelledby="chartExpandModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title fs-5" id="chartExpandModalLabel">Chart</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="metrics-chart-expanded">
+                    <canvas id="chartExpandModalCanvas"></canvas>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
