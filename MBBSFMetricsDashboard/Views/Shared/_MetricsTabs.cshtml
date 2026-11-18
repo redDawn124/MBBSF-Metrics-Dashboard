@@ -25,17 +25,10 @@
                  aria-labelledby="@(source.Id)-tab" tabindex="0">
                 <div id="@source.Id-dashboard-view">
                     <div class="d-flex flex-wrap gap-2 mb-3">
-                        @if (Model.CanEdit)
-                        {
-                            <button type="button" class="btn btn-outline-secondary" data-filter-open
-                                    aria-controls="@source.Id-filter-panel" aria-expanded="false">
-                                Filter By
-                            </button>
-                        }
-                        else
-                        {
-                            <button type="button" class="btn btn-outline-secondary">Filter Data</button>
-                        }
+                        <button type="button" class="btn btn-outline-secondary" data-filter-open
+                                aria-controls="@source.Id-filter-panel" aria-expanded="false">
+                            @(Model.CanEdit ? "Filter By" : "Filter Data")
+                        </button>
                         <button type="button" class="btn btn-outline-secondary" data-summary-open
                                 aria-controls="@source.Id-summary-panel" aria-expanded="false">
                             Summarize Data
@@ -54,17 +47,17 @@
                     
                 </div>
 
-                @if (Model.CanEdit && source.FilterKind == DashboardFilterKind.Coursera)
+                @if (source.FilterKind == DashboardFilterKind.Coursera)
                 {
                     <partial name="Filters/_CourseraFilter" model="source" />
                 }
 
-                @if (Model.CanEdit && source.FilterKind == DashboardFilterKind.GoogleForms)
+                @if (source.FilterKind == DashboardFilterKind.GoogleForms)
                 {
                     <partial name="Filters/_GoogleFormsFilter" model="source" />
                 }
 
-                @if (Model.CanEdit && source.FilterKind == DashboardFilterKind.Cognito)
+                @if (source.FilterKind == DashboardFilterKind.Cognito)
                 {
                     <partial name="Filters/_CognitoFilter" model="source" />
                 }
