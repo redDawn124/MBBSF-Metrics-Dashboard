@@ -8,7 +8,7 @@ public static class DashboardViewModelFactory
     // Temporary load-test fixture: pad every table to this many rows so the
     // dashboard can be exercised with a large dataset. Set to 0 to keep only
     // the original sample rows.
-    private const int LoadTestRowTarget = 0;
+    private const int LoadTestRowTarget = 75;
 
     private static readonly IReadOnlyList<string> FloridaCounties =
     [

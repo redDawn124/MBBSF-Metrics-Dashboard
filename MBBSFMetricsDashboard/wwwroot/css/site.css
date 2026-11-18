@@ -42,6 +42,7 @@ body {
 .metrics-panel {
   display: flex;
   flex-direction: column;
+  min-height: 0;
 }
 
 .metrics-panel-title {
@@ -64,6 +65,9 @@ body {
 }
 
 .metrics-table-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
   overflow: hidden;
 }
 
@@ -82,8 +86,26 @@ body {
 }
 
 .metrics-table-scroll {
-  max-height: 32rem;
+  flex: 1 1 auto;
+  min-height: 0;
   overflow: auto;
+}
+
+@media (min-width: 992px) {
+  /* Let the chart column set the row height; the table scrolls inside it. */
+  .metrics-content-layout > .col-lg-7 {
+    contain: size;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .metrics-table-shell {
+    min-height: 20rem;
+  }
+
+  .metrics-table-scroll {
+    max-height: 32rem;
+  }
 }
 
 .metrics-table-scroll .table {
